@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="5a53bbbe-b354-4e8e-b340-a01f50c8a6cf" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/log_ratio/log_ratio.py" beforeDir="false" afterPath="$PROJECT_DIR$/log_ratio/log_ratio.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/log_ratio/log_ratio_with_hard_constraints.py" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/log_ratio/log_ratio_with_hard_constraints.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/log_ratio/log_ratio_with_soft_constraints.py" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/log_ratio/log_ratio_with_soft_constraints.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/memory/l_mem" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/memory/l_mem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/memory/mem" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/memory/mem" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_18000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_18000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_19000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_19000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_20000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_20000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_21000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_21000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_22000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_22000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_23000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_23000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_24000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_24000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_41000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_41000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_42000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_42000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_43000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_43000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_44000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_44000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_45000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_45000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_46000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_46000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_47000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_47000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_48000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/nu_fun/nu_48000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_18000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_18000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_19000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_19000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_20000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_20000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_21000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_21000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_22000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_22000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_23000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_23000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_24000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_24000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_41000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_41000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_42000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_42000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_43000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_43000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_44000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_44000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_45000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_45000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_46000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_46000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_47000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_47000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_48000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/q_val/q_48000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_18000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_18000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_19000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_19000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_20000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_20000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_21000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_21000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_22000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_22000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_23000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_23000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_24000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_24000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_41000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_41000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_42000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_42000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_43000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_43000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_44000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_44000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_45000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_45000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_46000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_46000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_47000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_47000" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_48000" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/test/tar_q_val/target_q_48000" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/../.." />
+  </component>
+  <component name="ProjectId" id="1hWpwvXWGIv7zWZRx958JQErOsc" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../MAQL_w_Limit" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\POST_UNDERGRAD_RESEARCH_SLTC\MAQL\MAQL\test_model_data" />
+      <recent name="D:\POST_UNDERGRAD_RESEARCH_SLTC\MAQL\MAQL\test" />
+      <recent name="D:\POST_UNDERGRAD_RESEARCH_SLTC\MAQL\MAQL\main" />
+      <recent name="D:\POST_UNDERGRAD_RESEARCH_SLTC\MAQL\MAQL\log_ratio" />
+      <recent name="D:\POST_UNDERGRAD_RESEARCH_SLTC\MAQL\MAQL" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Python.test (1)">
+    <configuration name="log_ratio" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MAQL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/log_ratio" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/log_ratio/log_ratio.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="q_check" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MAQL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test_model_data" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test_model_data/q_check.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test (1)" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
+      <module name="MAQL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/test.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="test1" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MAQL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/test1.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <configuration name="value_dice_with_Q_learning" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="MAQL" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/test/value_dice/main_test" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/value_dice/main_test/value_dice_with_Q_learning.py" />
+      <option name="PARAMETERS" value="" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.log_ratio" />
+      <item itemvalue="Python.q_check" />
+      <item itemvalue="Python.test (1)" />
+      <item itemvalue="Python.test1" />
+      <item itemvalue="Python.value_dice_with_Q_learning" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.test (1)" />
+        <item itemvalue="Python.log_ratio" />
+        <item itemvalue="Python.q_check" />
+        <item itemvalue="Python.value_dice_with_Q_learning" />
+        <item itemvalue="Python.test1" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5a53bbbe-b354-4e8e-b340-a01f50c8a6cf" name="Default Changelist" comment="" />
+      <created>1600136944640</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600136944640</updated>
+      <workItem from="1600136946043" duration="3272000" />
+      <workItem from="1600207489854" duration="10101000" />
+      <workItem from="1600296056416" duration="6899000" />
+      <workItem from="1600318418323" duration="2545000" />
+      <workItem from="1600474290269" duration="3243000" />
+      <workItem from="1600732617077" duration="11019000" />
+      <workItem from="1600864393963" duration="3201000" />
+      <workItem from="1602745028316" duration="600000" />
+      <workItem from="1602762850743" duration="328000" />
+      <workItem from="1603168299152" duration="129000" />
+      <workItem from="1603821555474" duration="1182000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+</project>

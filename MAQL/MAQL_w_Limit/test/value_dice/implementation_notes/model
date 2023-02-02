@@ -1,0 +1,32 @@
+Policy
+    Dicrete Policy
+        Funtions that interface with the outisde have the option to obtain inputs as tensors or numpy arrays. By default tensor
+            sample
+            get_probabilities
+            get_log_probability
+            get_probability
+
+        sample fucntion returns action as a one hot vector so have to change it to an integer before feeding it to the
+        enviornment
+
+        state is given as a numpy array
+        action_no is given as a numpy array of an action's integer value rather than the one hot vector
+
+
+Value Fucntions
+    Q Value Function
+        Funtions that interface with the outisde have the option to obtain inputs as tensors or numpy arrays. By default tensor
+            get_value
+
+        both state and action inputs are given as numpy array. Action is given as an array of one hot vector
+
+    Value Function
+        Funtions that interface with the outisde have the option to obtain inputs as tensors or numpy arrays. By default tensor
+            get_value
+
+        states are given as a numpy array
+
+
+Suplementary Functions
+    Nu and Zeta
+        both state and action inputs are given as numpy array. Action is given as an array of one hot vector
