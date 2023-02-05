@@ -86,7 +86,7 @@ class Value_Dice():
             # This is only for discrete policy. Since the hot vector dim corresponds to the no of actions in this case
             batch_size = torch.Tensor(state).size()[0]
 
-            one_hot_next_action = [torch.zeros([batch_size, self.nu_param.action_dim])
+            one_hot_next_action = [torch.zeros ([batch_size, self.nu_param.action_dim])
                                    for _ in range(self.nu_param.action_dim)]
             for action_i in range(self.nu_param.action_dim):
                 one_hot_next_action[action_i][:, action_i] = 1
