@@ -11,7 +11,7 @@ from util.q_learning_to_policy import Q_learner_Policy
 
 class DivQL():
 
-    def __init__(self, env, q_nn_param, nu_param, algo_param, num_z, max_episodes =100, memory_capacity =10000,
+    def __init__(self, env, q_nn_param, nu_param, algo_param, num_z, optim_alpha=0.8, max_episode_length =100, memory_capacity =10000,
                  log_ratio_memory_capacity=5000, batch_size=400, save_path = Save_Paths(), load_path= Load_Paths(),
                  deterministic_env=True, average_next_nu = True):
 
@@ -25,7 +25,7 @@ class DivQL():
 
         self.num_z = num_z
 
-        self.max_episodes = max_episodes
+        self.max_episode_length = max_episode_length
 
         self.save_path = Save_Paths()
         self.load_path = Load_Paths()
@@ -114,42 +114,70 @@ class DivQL():
         self.log_ratio.nu_network.load(nu_path)
 
 
-    def step(self, state):
+    def step(self, R_max):
 
         #since step is done on the basis of single states and not as a batch
         batch_size = 1
 
-        q_values = self.Target_Q.get_value(state, format="numpy")
-        action, self.steps_done, self.epsilon = epsilon_greedy(q_values, self.steps_done, self.epsilon, self.action_dim)
+        self.steps_done = 0
+        self.epsilon = 0.9
+        state = self.env.reset()
+        self.inital_state = state
 
-        next_state, reward, done, _ = self.env.step(action)
+        tuples = []
+        R = 0
 
-        #converting the action for buffer as one hot vector
-        sample_hot_vec = np.array([0.0 for i in range(self.q_nn_param.action_dim)])
-        sample_hot_vec[action] = 1
+        for i in range(self.max_episode_length):
 
-        action = sample_hot_vec
+            z = np.array([np.random.randint(0, self.num_z )])
+            q_values = self.Target_Q.get_value(state, z, format="numpy")
 
-        self.time_step += 1
 
-        if done:
-            next_state = None
-            self.memory.push(state, action, reward, next_state, self.inital_state, self.time_step)
-            state = self.env.reset()
-            self.inital_state = state
-            self.time_step = 0
-            return state
+            action, self.steps_done, self.epsilon = epsilon_greedy(q_values, self.steps_done, self.epsilon, self.action_dim)
 
-        if self.time_step == self.max_episodes-1:
-            self.memory.push(state, action, reward, next_state, self.inital_state, self.time_step)
-            state = self.env.reset()
-            self.inital_state = state
-            self.time_step = 0
-            return state
+            next_state, reward, done, _ = self.env.step(action)
 
-        self.memory.push(state, action, reward, next_state, self.inital_state, self.time_step)
-        return next_state
+            R += reward
+            #converting the action for buffer as one hot vector
+            sample_hot_vec = np.array([0.0 for i in range(self.q_nn_param.action_dim)])
+            sample_hot_vec[action] = 1
 
+            action = sample_hot_vec
+
+            self.time_step += 1
+
+            if done:
+                next_state = None
+                tuples.append([state, action, reward, next_state, self.inital_state, self.time_step])
+                state = self.env.reset()
+                self.inital_state = state
+                self.time_step = 0
+
+                break
+
+            if self.time_step == self.max_episode_length-1:
+                tuples.append([state, action, reward, next_state, self.inital_state, self.time_step])
+                state = self.env.reset()
+                self.inital_state = state
+                self.time_step = 0
+
+                break
+
+            tuples.append([state, action, reward, next_state, self.inital_state, self.time_step])
+
+            state = next_state
+
+
+        if R_max < 0.8*R_max:
+            for i in range(len(tuples)):
+                tuples[i].append(True)
+        else:
+            for i in range(len(tuples)):
+                tuples[i].append(False)
+        for t in tuples:
+            self.memory[z.item()].push(t[0], t[1], t[2], t[3], t[4], t[5], t[6])
+
+        
     def get_action(self, state):
         q_values = self.Q.get_value(state, format="numpy")
         action_scaler = np.argmax(q_values)

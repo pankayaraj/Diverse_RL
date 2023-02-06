@@ -17,7 +17,7 @@ class Transition_tuple():
 
 
     def get_all_attributes(self):
-        return [self.state, self.action, self.reward, self.next_state, self.initial_state, self.time_step]
+        return [self.state, self.action, self.reward, self.next_state, self.initial_state, self.time_step, self.optim_traj]
 
 class Replay_Memory():
 
@@ -96,14 +96,16 @@ def combine_transition_tuples(tuples):
     for tuple in tuples:
         s, a, r, n_s, i_s, t, o_t = tuple.state, tuple.action, tuple.reward, tuple.next_state, tuple.inital_state, tuple.time_step, tuple.optim_traj
 
-        state = np.concatenate(state, s, axis=0)
-        action = np.concatenate(action, a, axis=0)
-        reward = np.concatenate(reward, r, axis=0)
-        next_state = np.concatenate(next_state, n_s, axis = 0)
-        initial_state = np.concatenate(initial_state, i_s, axis=0)
-        time_step = np.concatenate(time_step, t, axis = 0)
-        optim_traj = np.concatenate(optim_traj, o_t, axis=0)
+        state = np.concatenate((state, s), axis=0)
+        action = np.concatenate((action, a), axis=0)
+        reward = np.concatenate((reward, r), axis=0)
+        next_state = np.concatenate((next_state, n_s), axis = 0)
+        initial_state = np.concatenate((initial_state), i_s, axis=0)
+        time_step = np.concatenate((time_step, t), axis = 0)
+        optim_traj = np.concatenate((optim_traj, o_t), axis=0)
 
 
     main_tuple = Transition_tuple(state, action, reward, next_state, initial_state, time_step, optim_traj)
     return main_tuple
+
+

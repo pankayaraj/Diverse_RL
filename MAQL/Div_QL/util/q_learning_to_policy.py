@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-from q_learning.q_learning import Q_learning
+from q_learning import Q_learning
 
 
 class Q_learner_Policy():
