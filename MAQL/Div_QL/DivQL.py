@@ -142,6 +142,7 @@ class DivQL():
             sample_hot_vec = np.array([0.0 for i in range(self.q_nn_param.action_dim)])
             sample_hot_vec[action] = 1
 
+
             action = sample_hot_vec
 
             self.time_step += 1
@@ -177,7 +178,7 @@ class DivQL():
         for t in tuples:
             self.memory[z.item()].push(t[0], t[1], t[2], t[3], t[4], t[5], t[6])
 
-        
+
     def get_action(self, state):
         q_values = self.Q.get_value(state, format="numpy")
         action_scaler = np.argmax(q_values)
