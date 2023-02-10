@@ -184,25 +184,29 @@ class DivQL():
         action_scaler = np.argmax(q_values)
         return action_scaler
 
-    def train(self, log_ratio_update=False):
+    def train(self, z, log_ratio_update=False):
 
         batch_size = self.batch_size
-        if len(self.memory) < batch_size:
+        if len(self.memory[z]) < batch_size:
             return
 
-        batch = self.memory.sample(batch_size)
+        batch = self.memory[z].sample(batch_size)
         state = batch.state
         action = torch.Tensor(batch.action).to(self.q_nn_param.device)
         action_scaler = action.max(1)[1].unsqueeze(1) #to make them as indices in the gather function
         reward = torch.Tensor(batch.reward).to(self.q_nn_param.device)
         next_state = batch.next_state
-
+        optim_traj = batch.optim_traj
 
         non_final_mask = torch.tensor(tuple(map(lambda s: s is not None,
                                                 batch.next_state)), device=self.q_nn_param.device, dtype=torch.bool)
 
         non_final_next_states = torch.Tensor([s for s in next_state if s is not None]).to(self.q_nn_param.device)
 
+        optim_mask = torch.Tensor(optim_traj).bool()
+
+        print(non_final_mask)
+        print(optim_mask)
 
         #get only the q value relevant to the actions
         state_action_values = self.Q.get_value(state).gather(1, action_scaler)
