@@ -297,10 +297,19 @@ class Nu_NN(BaseNN):
 
         self.to(self.nn_params.device)
 
-    def forward(self, state, action):
+    def forward(self, state, z, action):
 
         if type(state) != torch.Tensor:
             state = torch.Tensor(state).to(self.nn_params.device)
+        if type(z) != torch.Tensor:
+            z = torch.Tensor(z).to(self.nn_params.device)
+
+        if z.dim() == 1:
+            state = torch.cat((state, z), dim=0)
+        else:
+            state = torch.cat((state, z), dim=1)
+
+
         if self.state_action:
             if type(action) != torch.Tensor:
                 action = torch.Tensor(action).to(self.nn_params.device)
@@ -350,10 +359,18 @@ class Zeta_NN(BaseNN):
 
         self.to(self.nn_params.device)
 
-    def forward(self, state, action):
+    def forward(self, state, z, action):
         """ Here the input can either be the state or a concatanation of state and action"""
         if type(state) != torch.Tensor:
             state = torch.Tensor(state).to(self.nn_params.device)
+        if type(z) != torch.Tensor:
+            z = torch.Tensor(z).to(self.nn_params.device)
+
+        if z.dim() == 1:
+            state = torch.cat((state, z), dim= 0)
+        else:
+            state = torch.cat((state, z), dim=1)
+
         if self.state_action:
             if type(action) != torch.Tensor:
                 action = torch.Tensor(action).to(self.nn_params.device)
@@ -396,12 +413,18 @@ class Discrete_Q_Function_NN_Z(BaseNN):
         self.to(self.nn_params.device)
 
     def forward(self, state, z):
+
+
         if type(state) != torch.Tensor:
             state = torch.Tensor(state).to(self.nn_params.device)
         if type(z) != torch.Tensor:
             z = torch.Tensor(z).to(self.nn_params.device)
 
-        inp = torch.cat((state, z), dim= 0)
+
+        if z.dim() == 1:
+            inp = torch.cat((state, z), dim= 0)
+        else:
+            inp = torch.cat((state, z), dim=1)
 
         for i, layer in enumerate(self.layers):
             if self.non_lin != None:

@@ -11,12 +11,12 @@ class Q_learner_Policy():
         self.Q = q_function
 
 
-    def sample(self, state, format="torch"):
+    def sample(self, state, z, format="torch"):
 
         state = torch.Tensor(state).to(self.nn_params.device)
         self.batch_size = state.size()[0]
 
-        q_values = self.Q.get_value(state, format="torch")
+        q_values = self.Q.get_value(state, z, format="torch")
         actions = q_values.max(1)[1]
 
 
@@ -34,14 +34,14 @@ class Q_learner_Policy():
 
 
     def get_probabilities(self, state, format="torch"):
-        probabilities = self.sample(state)
+        probabilities = self.sample(state, z)
         if format == "torch":
             return probabilities
         elif format == "numpy":
             return probabilities.cpu().detach().numpy()
 
-    def get_probability(self, state, action_no, format="torch"):
-        probabilities = self.sample(state)
+    def get_probability(self, state, z, action_no, format="torch"):
+        probabilities = self.sample(state, z)
         prob = torch.reshape(probabilities[:, action_no], shape=(self.batch_size, 1))
 
         if format == "torch":
@@ -49,8 +49,8 @@ class Q_learner_Policy():
         else:
             return prob.cpu().detach().numpy()
 
-    def get_log_probability(self, state, action_no, format="torch"):
+    def get_log_probability(self, state, z, action_no, format="torch"):
         if format == "torch":
-            return torch.log(1e-8 + self.get_probability(state, action_no, format="torch")).to(self.nn_params.device)
+            return torch.log(1e-8 + self.get_probability(state, z, action_no, format="torch")).to(self.nn_params.device)
         elif format == "numpy":
-            return np.log(1e-8 + self.get_probability(state, action_no, format="numpy"))
+            return np.log(1e-8 + self.get_probability(state, z, action_no, format="numpy"))

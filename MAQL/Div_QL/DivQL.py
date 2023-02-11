@@ -129,8 +129,12 @@ class DivQL():
 
         for i in range(self.max_episode_length):
 
-            z = np.array([np.random.randint(0, self.num_z )])
-            q_values = self.Target_Q.get_value(state, z, format="numpy")
+            z = np.random.randint(0, self.num_z)
+            # converting z into one hot vector
+            z_hot_vec = np.array([0.0 for i in range(self.num_z)])
+            z_hot_vec[z] = 1
+
+            q_values = self.Target_Q.get_value(state, z_hot_vec, format="numpy")
 
 
             action, self.steps_done, self.epsilon = epsilon_greedy(q_values, self.steps_done, self.epsilon, self.action_dim)
@@ -141,6 +145,8 @@ class DivQL():
             #converting the action for buffer as one hot vector
             sample_hot_vec = np.array([0.0 for i in range(self.q_nn_param.action_dim)])
             sample_hot_vec[action] = 1
+
+
 
 
             action = sample_hot_vec
@@ -176,11 +182,16 @@ class DivQL():
             for i in range(len(tuples)):
                 tuples[i].append(False)
         for t in tuples:
-            self.memory[z.item()].push(t[0], t[1], t[2], t[3], t[4], t[5], t[6])
+            self.memory[z].push(t[0], t[1], t[2], t[3], t[4], t[5], t[6])
 
 
-    def get_action(self, state):
-        q_values = self.Q.get_value(state, format="numpy")
+    def get_action(self, state, z):
+        # converting z into one hot vector
+        z_hot_vec = np.array([0.0 for i in range(self.num_z)])
+        z_hot_vec[z] = 1
+
+
+        q_values = self.Q.get_value(state, z_hot_vec, format="numpy")
         action_scaler = np.argmax(q_values)
         return action_scaler
 
@@ -198,6 +209,14 @@ class DivQL():
         next_state = batch.next_state
         optim_traj = batch.optim_traj
 
+        # converting z into one hot vector
+        z_hot_vec = np.array([0.0 for i in range(self.num_z)])
+        z_hot_vec[z] = 1
+
+
+        z_arr = np.array([z_hot_vec for _ in range(batch_size)])
+
+
         non_final_mask = torch.tensor(tuple(map(lambda s: s is not None,
                                                 batch.next_state)), device=self.q_nn_param.device, dtype=torch.bool)
 
@@ -205,14 +224,18 @@ class DivQL():
 
         optim_mask = torch.Tensor(optim_traj).bool()
 
-        print(non_final_mask)
-        print(optim_mask)
+
 
         #get only the q value relevant to the actions
-        state_action_values = self.Q.get_value(state).gather(1, action_scaler)
+        state_action_values = self.Q.get_value(state, z_arr).gather(1, action_scaler)
 
         with torch.no_grad():
             log_ratio = self.get_log_ratio(batch)
+            effective_log_ratio = torch.zeros(batch_size, device=self.q_nn_param.device)
+            effective_log_ratio[non_final_mask] = log_ratio
+
+        print(log_ratio)
+        print(effective_log_ratio)
 
         with torch.no_grad():
             next_state_action_values = torch.zeros(batch_size, device=self.q_nn_param.device)

@@ -142,7 +142,7 @@ class Log_Ratio():
         return nu, next_nu, initial_nu
 
 
-    def compute_for_eval(self, state, action, next_state, target_policy):
+    def compute_for_eval(self, state, z, action, next_state, target_policy):
 
         nu = self.nu_network(state, action)
 
@@ -151,7 +151,7 @@ class Log_Ratio():
                                                 next_state)), device=self.nu_param.device, dtype=torch.bool)
 
         non_final_next_states = torch.Tensor([s for s in next_state if s is not None])
-        next_action = target_policy.sample(non_final_next_states)
+        next_action = target_policy.sample(non_final_next_states, z)
 
         #in case of the deterministic env then we can take the averge over all actions n it would suffice. Even in the absese
         #if averge netx nu flag is set we average over all the actions to reduce any bias
@@ -165,7 +165,7 @@ class Log_Ratio():
             for action_i in range(self.nu_param.action_dim):
                 one_hot_next_action[action_i][:, action_i] = 1
 
-            next_target_probabilities = target_policy.get_probabilities(non_final_next_states)
+            next_target_probabilities = target_policy.get_probabilities(non_final_next_states, z)
             all_next_nu = [self.nu_network(non_final_next_states, one_hot_next_action[action_i])
                            for action_i in range(self.nu_param.action_dim)]
 
