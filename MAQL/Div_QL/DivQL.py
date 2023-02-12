@@ -45,7 +45,7 @@ class DivQL():
         self.loss_function = torch.nn.functional.mse_loss
         self.Q_optim = torch.optim.Adam(self.Q.parameters(), self.q_nn_param.l_r)
 
-        self.log_ratio = Log_Ratio(self.nu_param, self.algo_param, deterministic_env=deterministic_env, averege_next_nu=average_next_nu,
+        self.log_ratio = Log_Ratio(self.nu_param, self.algo_param, deterministic_env=deterministic_env, num_z=self.num_z, averege_next_nu=average_next_nu,
                              save_path=save_path.nu_path, load_path=load_path.nu_path)
 
 
@@ -80,13 +80,13 @@ class DivQL():
         target_policy = self.get_target_policy(target=True)
         self.log_ratio.train_ratio(data, target_policy)
 
-    def get_log_ratio(self, data):
+    def get_log_ratio(self, data, z_arr):
         #here data can be off Q learning's memory
         target_policy = self.get_target_policy(target=True)
-        return self.log_ratio.get_log_state_action_density_ratio(data, target_policy)
+        return self.log_ratio.get_log_state_action_density_ratio(data, z_arr, target_policy)
 
-    def push_ratio_memory(self, state, action, reward, next_state, inital_state, time_step):
-        self.log_ratio_memory.push(state, action, reward, next_state, inital_state, time_step)
+    def push_ratio_memory(self, state, action, reward, next_state, inital_state, time_step, optim_traj):
+        self.log_ratio_memory.push(state, action, reward, next_state, inital_state, time_step, optim_traj)
 
     def sample_for_log_ratio(self, batch_size, current_z_index):
         n = batch_size//self.num_z
@@ -230,7 +230,7 @@ class DivQL():
         state_action_values = self.Q.get_value(state, z_arr).gather(1, action_scaler)
 
         with torch.no_grad():
-            log_ratio = self.get_log_ratio(batch)
+            log_ratio = self.get_log_ratio(batch, z_arr)
             effective_log_ratio = torch.zeros(batch_size, device=self.q_nn_param.device)
             effective_log_ratio[non_final_mask] = log_ratio
 

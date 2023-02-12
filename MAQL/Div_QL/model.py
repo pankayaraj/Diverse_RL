@@ -303,7 +303,10 @@ class Nu_NN(BaseNN):
             state = torch.Tensor(state).to(self.nn_params.device)
         if type(z) != torch.Tensor:
             z = torch.Tensor(z).to(self.nn_params.device)
+        if type(action) != torch.Tensor:
+            action = torch.Tensor(action).to(self.nn_params.device)
 
+        
         if z.dim() == 1:
             state = torch.cat((state, z), dim=0)
         else:
