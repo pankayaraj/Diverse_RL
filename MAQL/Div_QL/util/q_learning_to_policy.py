@@ -33,7 +33,7 @@ class Q_learner_Policy():
             return sample_hot_vec.cpu().detach().numpy()
 
 
-    def get_probabilities(self, state, format="torch"):
+    def get_probabilities(self, state, z, format="torch"):
         probabilities = self.sample(state, z)
         if format == "torch":
             return probabilities

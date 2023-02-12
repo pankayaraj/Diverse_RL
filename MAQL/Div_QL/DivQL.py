@@ -230,21 +230,22 @@ class DivQL():
         state_action_values = self.Q.get_value(state, z_arr).gather(1, action_scaler)
 
         with torch.no_grad():
-            log_ratio = self.get_log_ratio(batch, z_arr)
-            effective_log_ratio = torch.zeros(batch_size, device=self.q_nn_param.device)
-            effective_log_ratio[non_final_mask] = log_ratio
-
-        print(log_ratio)
-        print(effective_log_ratio)
-
-        with torch.no_grad():
             next_state_action_values = torch.zeros(batch_size, device=self.q_nn_param.device)
-            next_state_action_values[non_final_mask] = self.Target_Q.get_value(non_final_next_states).max(1)[0]
+            next_state_action_values[non_final_mask] = self.Target_Q.get_value(non_final_next_states, z_arr).max(1)[0]
             #now there will be a zero if it is the final state and q*(n_s,n_a) is its not None
 
+      
+        with torch.no_grad():
+            log_ratio = self.get_log_ratio(batch, z_arr)
+            effective_log_ratio = torch.zeros(batch_size, device=self.q_nn_param.device)
+            effective_log_ratio = log_ratio.squeeze()*optim_mask
+
+        
+
+        
 
 
-        expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + self.algo_param.alpha*log_ratio
+        expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + self.algo_param.alpha*effective_log_ratio
         loss = self.loss_function( state_action_values, expected_state_action_values)
 
         self.Q_optim.zero_grad()

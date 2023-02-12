@@ -281,9 +281,9 @@ class Nu_NN(BaseNN):
         self.state_action = state_action
         # Hidden layers
         if state_action:
-            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim
+            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim + 1
         else:
-            layer_input_dim = self.nn_params.state_dim
+            layer_input_dim = self.nn_params.state_dim + 1
         hidden_layer_dim = self.nn_params.hidden_layer_dim
         for i, dim in enumerate(hidden_layer_dim):
             l = nn.Linear(layer_input_dim, dim)
@@ -319,7 +319,8 @@ class Nu_NN(BaseNN):
             inp = torch.cat((state, action), dim=1)
         else:
             inp = state
-
+        
+        
         for i, layer in enumerate(self.layers):
             if self.non_lin != None:
                 inp = self.non_lin(layer(inp))
@@ -343,9 +344,9 @@ class Zeta_NN(BaseNN):
         self.state_action = state_action
 
         if state_action:
-            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim
+            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim + 1
         else:
-            layer_input_dim = self.nn_params.state_dim
+            layer_input_dim = self.nn_params.state_dim + 1
 
         hidden_layer_dim = self.nn_params.hidden_layer_dim
 
