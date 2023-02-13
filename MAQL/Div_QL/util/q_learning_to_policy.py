@@ -17,6 +17,7 @@ class Q_learner_Policy():
         self.batch_size = state.size()[0]
 
 
+
         q_values = self.Q.get_value(state, z, format="torch")
         actions = q_values.max(1)[1]
 

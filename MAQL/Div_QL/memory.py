@@ -106,11 +106,12 @@ def combine_transition_tuples(tuples):
             time_step = t
             optim_traj = o_t
         else:
+
             state = np.concatenate((state, s), axis=0)
             action = np.concatenate((action, a), axis=0)
             reward = np.concatenate((reward, r), axis=0)
             next_state = np.concatenate((next_state, n_s), axis = 0)
-            initial_state = np.concatenate((initial_state), i_s, axis=0)
+            initial_state = np.concatenate((initial_state, i_s), axis=0)
             time_step = np.concatenate((time_step, t), axis = 0)
             optim_traj = np.concatenate((optim_traj, o_t), axis=0)
 

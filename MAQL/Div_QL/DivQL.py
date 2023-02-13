@@ -109,8 +109,10 @@ class DivQL():
 
         mem_sample_size = [n for i in range(self.num_z-1)]
 
+
         if n*(self.num_z-1) != batch_size:
-            mem_sample_size[-1] = batch_size - (self.num_z-1)*n
+            mem_sample_size[-1] += batch_size - (self.num_z-1)*(n)
+
 
         samples = []
         for i in range(self.num_z-1):
@@ -263,7 +265,9 @@ class DivQL():
         
 
 
-        expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + self.algo_param.alpha*effective_log_ratio
+        expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + self.algo_param.alpha*effective_log_ratio.unsqueeze(1)
+
+
         loss = self.loss_function( state_action_values, expected_state_action_values)
 
         self.Q_optim.zero_grad()

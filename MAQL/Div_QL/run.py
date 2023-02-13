@@ -28,7 +28,7 @@ nu_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[6, 6], non_
 q_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=device, l_r=0.05)
 algo_param = Algo_Param(hard_update_interval=1)
 algo_param.gamma = 0.9
-num_z = 2
+num_z = 4
 
 grid_size = 10
 env = GridWalk(grid_size, False)
@@ -46,16 +46,17 @@ max_episodes = 100
 
 M = DivQL(env, q_param, nu_param, algo_param, num_z)
 
-for i in range(1000):
+for i in range(100):
+    print(i)
     M.step(80)
-for i in range(1000):
+for i in range(3000):
     M.step(80)
 
     if i % update_interval == 0:
         M.hard_update()
     if i % save_interval == 0:
         print("saving")
-        M.save("q", "target_q")
+        M.save("q1", "target_q1", "nu1")
 
     if i % eval_interval == 0:
         z = np.random.randint(0, num_z)
