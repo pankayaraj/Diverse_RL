@@ -62,6 +62,7 @@ class MAQL_HC():
         self.batch_size = batch_size
         self.env = env
 
+        self.T = 0
         self.L = 0
     def get_target_policy(self, target=True):
         #this is the current policy the agent should evaluate against given the data

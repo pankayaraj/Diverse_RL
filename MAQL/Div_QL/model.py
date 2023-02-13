@@ -273,7 +273,7 @@ class Value_Function_NN(BaseNN):
 
 class Nu_NN(BaseNN):
 
-    def __init__(self, nn_params, save_path, load_path, state_action=True):
+    def __init__(self, nn_params, save_path, load_path, num_z, state_action=True):
         super(Nu_NN, self).__init__(save_path=save_path, load_path=load_path)
         self.layers = nn.ModuleList([])
         self.nn_params = nn_params
@@ -281,9 +281,9 @@ class Nu_NN(BaseNN):
         self.state_action = state_action
         # Hidden layers
         if state_action:
-            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim + 1
+            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim + + num_z
         else:
-            layer_input_dim = self.nn_params.state_dim + 1
+            layer_input_dim = self.nn_params.state_dim + + num_z
         hidden_layer_dim = self.nn_params.hidden_layer_dim
         for i, dim in enumerate(hidden_layer_dim):
             l = nn.Linear(layer_input_dim, dim)
@@ -336,7 +336,7 @@ class Zeta_NN(BaseNN):
         state_action : weather to estimate for state action or just state.
     """
 
-    def __init__(self, nn_params, save_path, load_path, state_action=True):
+    def __init__(self, nn_params, save_path, load_path, num_z, state_action=True):
         super(Zeta_NN, self).__init__(save_path=save_path, load_path=load_path)
         self.layers = nn.ModuleList([])
         self.nn_params = nn_params
@@ -344,9 +344,9 @@ class Zeta_NN(BaseNN):
         self.state_action = state_action
 
         if state_action:
-            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim + 1
+            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim + + num_z
         else:
-            layer_input_dim = self.nn_params.state_dim + 1
+            layer_input_dim = self.nn_params.state_dim + + num_z
 
         hidden_layer_dim = self.nn_params.hidden_layer_dim
 
@@ -394,7 +394,7 @@ class Zeta_NN(BaseNN):
 
 class Discrete_Q_Function_NN_Z(BaseNN):
 
-    def __init__(self, nn_params, save_path, load_path):
+    def __init__(self, nn_params, save_path, load_path, num_z):
 
         super(Discrete_Q_Function_NN_Z, self).__init__(save_path=save_path, load_path=load_path)
         self.layers = nn.ModuleList([])
@@ -402,7 +402,7 @@ class Discrete_Q_Function_NN_Z(BaseNN):
         self.non_lin = self.nn_params.non_linearity
 
         # Hidden layers
-        layer_input_dim = self.nn_params.state_dim + 1 #to add the latent variable and state as an input 
+        layer_input_dim = self.nn_params.state_dim + num_z #to add the latent variable and state as an input
         hidden_layer_dim = self.nn_params.hidden_layer_dim
         for i, dim in enumerate(hidden_layer_dim):
             l = nn.Linear(layer_input_dim, dim)

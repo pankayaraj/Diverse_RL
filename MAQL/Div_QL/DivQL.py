@@ -35,10 +35,10 @@ class DivQL():
         self.time_step = 0
 
         self.Q = Discrete_Q_Function_NN_Z(nn_params=q_nn_param,
-                                        save_path= self.save_path.q_path, load_path=self.load_path.q_path)
+                                        save_path= self.save_path.q_path, load_path=self.load_path.q_path, num_z=num_z)
 
         self.Target_Q = Discrete_Q_Function_NN_Z(nn_params=q_nn_param,
-                                        save_path= self.save_path.q_path, load_path=self.load_path.q_path)
+                                        save_path= self.save_path.q_path, load_path=self.load_path.q_path,  num_z=num_z)
         self.Target_Q.load_state_dict(self.Q.state_dict())
 
         #self.loss_function = torch.nn.functional.smooth_l1_loss
@@ -56,14 +56,14 @@ class DivQL():
         self.memory_capacity = memory_capacity
 
         #log ratio
-        #self.log_ratio_memory = Replay_Memory(log_ratio_memory_capacity)
-        #self.log_ratio_memory_capacitry = log_ratio_memory_capacity
+        self.log_ratio_memory = Replay_Memory(log_ratio_memory_capacity)
+        self.log_ratio_memory_capacitry = log_ratio_memory_capacity
 
         self.batch_size = batch_size
         self.env = env
 
         self.L = 0
-
+        self.T = 0
     def get_target_policy(self, target=True):
         #this is the current policy the agent should evaluate against given the data
         #choose weather to give the current Q or the target Q from dual_Q
@@ -74,32 +74,48 @@ class DivQL():
 
         return target_policy
 
-    def train_log_ratio(self):
+    def train_log_ratio(self, z, fixed_ratio_memory=False):
         #here data must be off the ratio's memory
-        data = self.log_ratio_memory.sample(self.batch_size)
+
+        if fixed_ratio_memory:
+            data = self.log_ratio_memory.sample(self.batch_size)
+        else:
+            data = self.sample_for_log_ratio(self.batch_size, current_z_index=z)
+
+
         target_policy = self.get_target_policy(target=True)
-        self.log_ratio.train_ratio(data, target_policy)
+
+        z_hot_vec = np.array([0.0 for i in range(self.num_z)])
+        z_hot_vec[z] = 1
+
+        z_arr = np.array([z_hot_vec for _ in range(self.batch_size)])
+
+
+        self.log_ratio.train_ratio(data, z_arr, target_policy)
 
     def get_log_ratio(self, data, z_arr):
         #here data can be off Q learning's memory
         target_policy = self.get_target_policy(target=True)
         return self.log_ratio.get_log_state_action_density_ratio(data, z_arr, target_policy)
 
+    #this function is in case we need to data externally for the log ratio training memory
     def push_ratio_memory(self, state, action, reward, next_state, inital_state, time_step, optim_traj):
         self.log_ratio_memory.push(state, action, reward, next_state, inital_state, time_step, optim_traj)
 
     def sample_for_log_ratio(self, batch_size, current_z_index):
-        n = batch_size//self.num_z
+        n = batch_size//(self.num_z-1)
         
-        mem_indices = [i for i in range(self.num_z) and i != current_z_index]
+        mem_indices = [i and i != current_z_index for i in range(self.num_z)     ]
+
         mem_sample_size = [n for i in range(self.num_z-1)]
-        
+
         if n*(self.num_z-1) != batch_size:
             mem_sample_size[-1] = batch_size - (self.num_z-1)*n
 
         samples = []
         for i in range(self.num_z-1):
             samples.append(self.memory[mem_indices[i]].sample(mem_sample_size[i]))
+
 
         return combine_transition_tuples(samples)
 
@@ -128,11 +144,12 @@ class DivQL():
         R = 0
 
         for i in range(self.max_episode_length):
-
+            self.T += 1
             z = np.random.randint(0, self.num_z)
             # converting z into one hot vector
             z_hot_vec = np.array([0.0 for i in range(self.num_z)])
             z_hot_vec[z] = 1
+
 
             q_values = self.Target_Q.get_value(state, z_hot_vec, format="numpy")
 
@@ -174,6 +191,8 @@ class DivQL():
 
             state = next_state
 
+            if self.T > 1000:
+                self.train(z, True)
 
         if R_max < 0.8*R_max:
             for i in range(len(tuples)):
@@ -237,7 +256,6 @@ class DivQL():
       
         with torch.no_grad():
             log_ratio = self.get_log_ratio(batch, z_arr)
-            effective_log_ratio = torch.zeros(batch_size, device=self.q_nn_param.device)
             effective_log_ratio = log_ratio.squeeze()*optim_mask
 
         
@@ -253,7 +271,7 @@ class DivQL():
         self.Q_optim.step()
 
         if log_ratio_update == True:
-            self.train_log_ratio()
+            self.train_log_ratio(z)
 
         self.L = np.linalg.norm(log_ratio.sum().item()/batch_size)
         self.log_ratio.change_lr(np.linalg.norm(log_ratio.sum().item()/batch_size))

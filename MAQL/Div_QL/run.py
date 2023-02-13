@@ -28,7 +28,7 @@ nu_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[6, 6], non_
 q_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=device, l_r=0.05)
 algo_param = Algo_Param(hard_update_interval=1)
 algo_param.gamma = 0.9
-num_z = 1
+num_z = 2
 
 grid_size = 10
 env = GridWalk(grid_size, False)
@@ -39,12 +39,38 @@ env_tar = GridWalk(grid_size, False)
 #behaviour_policy = Q_learner_Policy(behaviour_Q.Q, q_param)
 #behaviour_policy.Q.load("q")
 
-
-
+update_interval = 1
+save_interval = 10
+eval_interval = 10
+max_episodes = 100
 
 M = DivQL(env, q_param, nu_param, algo_param, num_z)
 
-for i in range(100):
-    M.step(100)
+for i in range(1000):
+    M.step(80)
+for i in range(1000):
+    M.step(80)
 
-M.train(0)
+    if i % update_interval == 0:
+        M.hard_update()
+    if i % save_interval == 0:
+        print("saving")
+        M.save("q", "target_q")
+
+    if i % eval_interval == 0:
+        z = np.random.randint(0, num_z)
+
+        s = env2.reset()
+        i_s = s
+        rew = 0
+        for j in range(max_episodes):
+            a = M.get_action(s, z)
+            s, r, d, _ = env2.step(a)
+            rew += r
+            if j == max_episodes - 1:
+                d = True
+            if d == True:
+                break
+        print("for z = " + str(z) + " reward at itr " + str(i) + " = " + str(rew) + " at state: " + str(s) + " starting from: " + str(i_s))
+    # Q.memory = torch.load("mem")
+    torch.save(M.memory, "mem")

@@ -28,7 +28,7 @@ class Log_Ratio():
         self.num_z = num_z
 
         #log_ratio estimator
-        self.nu_network = Nu_NN(nu_param, save_path=save_path, load_path=load_path)
+        self.nu_network = Nu_NN(nu_param, save_path=save_path, load_path=load_path,  num_z=num_z)
         self.nu_optimizer = torch.optim.Adam(self.nu_network.parameters(), lr=self.nu_param.l_r)
 
 

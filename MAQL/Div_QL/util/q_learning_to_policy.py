@@ -1,7 +1,7 @@
 import torch
 import numpy as np
 
-from q_learning import Q_learning
+
 
 
 class Q_learner_Policy():
@@ -15,6 +15,7 @@ class Q_learner_Policy():
 
         state = torch.Tensor(state).to(self.nn_params.device)
         self.batch_size = state.size()[0]
+
 
         q_values = self.Q.get_value(state, z, format="torch")
         actions = q_values.max(1)[1]

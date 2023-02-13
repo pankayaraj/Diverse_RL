@@ -53,10 +53,10 @@ class GridWalk(object):
 
   def reset(self):
     """Resets the agent to a random square."""
-    self._x = np.random.randint(self._length)
-    self._y = np.random.randint(self._length)
-    #self._x = 0
-    #self._y = 0
+    #self._x = np.random.randint(self._length)
+    #self._y = np.random.randint(self._length)
+    self._x = 0
+    self._y = 0
     self.current_state = np.array([self._x, self._y])
     return self._get_obs()
 
