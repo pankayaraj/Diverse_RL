@@ -1,5 +1,6 @@
 import torch
 import numpy as np
+import torch.nn.functional as F
 
 class NN_Paramters():
     def __init__(self, state_dim, action_dim, non_linearity = F.tanh, weight_initializer = 'xavier', bias_initializer = 'zero',
