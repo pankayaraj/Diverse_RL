@@ -46,7 +46,7 @@ class GridWalk(object):
     self._n_state = length ** 2
     self._n_action = 5
     self._target_x = length - 1
-    self._target_y = length - 1
+    self._target_y = 0
     self.discrete_action = True
     self.current_state = np.array([0, 0])
     self.traget_state = np.array([self._target_x, self._target_y])
