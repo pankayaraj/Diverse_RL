@@ -5,20 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b02f43d0-efdc-4fac-8bbf-75cff0430a5f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Div_QL/.idea/Div_QL.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Div_QL/test_distances/train_distance.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/get_behavior_policy_data.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/test_policy.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../MAQL_w_Limit/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../MAQL_w_Limit/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/Q_models/qx0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/Q_models/qy0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/Q_models/target_qx0" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/Q_models/target_qy0" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/env/gridworld/environments.py" beforeDir="false" afterPath="$PROJECT_DIR$/env/gridworld/environments.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/parameters.py" beforeDir="false" afterPath="$PROJECT_DIR$/parameters.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/test/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/main_test_nu.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/main_test_nu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/nu_1" beforeDir="false" afterPath="$PROJECT_DIR$/test/nu_1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/value_dice.py" beforeDir="false" afterPath="$PROJECT_DIR$/value_dice.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -48,11 +41,12 @@
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "last_opened_file_path": "/media/pankayaraj/Storage/Diverse_RL/MAQL/Value_DICE_Pytorch"
+    "last_opened_file_path": "/media/pankayaraj/Storage/Diverse_RL/MAQL/Div_QL"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/test/Q_models" />
       <recent name="D:\POST_UNDERGRAD_RESEARCH_SLTC\MADAC\Value_DICE_Pytorch\gym_minigrid\envs" />
       <recent name="D:\POST_UNDERGRAD_RESEARCH_SLTC\MADAC\Value_DICE_Pytorch\test" />
     </key>
@@ -60,7 +54,7 @@
       <recent name="$PROJECT_DIR$/test" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main_test_nu">
+  <component name="RunManager" selected="Python.main">
     <configuration name="dicrete_policy" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Value_DICE_Pytorch" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -180,9 +174,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.main" />
         <item itemvalue="Python.main_test_nu" />
         <item itemvalue="Python.get_behavior_policy_data" />
-        <item itemvalue="Python.main" />
         <item itemvalue="Python.dicrete_policy" />
         <item itemvalue="Python.pytorch_test2" />
       </list>

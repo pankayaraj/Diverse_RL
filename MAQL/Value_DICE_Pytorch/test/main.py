@@ -23,7 +23,7 @@ env = GridWalk(grid_size, False)
 #behaviour_policy = Optim_Policy_Gridwalk(env, action_dim=5, eps_explore=0.2)
 target_policy = DiscretePolicyNN(policy_param, "1", "1")
 target_policy.load("train/1")
-
+#target_policy.load("Q_models/qx0")
 
 V = Value_Dice(target_policy, nu_param, algo_param)
 #Buffer, _ , _ = collect_data(env, behaviour_policy, 1000, 10)
@@ -68,4 +68,4 @@ for i in range(no_iterations):
         # np.log(ratio[s[0][0]*grid_size+ s[0][1]]*get_policy_ratio(target_policy, behaviour_policy, s, a_n)) )
 
         print(V.debug())
-        V.nu_network.save("nu_1")
+        V.nu_network.save("nu_2")

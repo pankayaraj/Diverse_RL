@@ -46,7 +46,7 @@ class Value_Dice():
 
         next_action = self.target_policy.sample(next_state, format="torch")
         initial_action = self.target_policy.sample(initial_state, format="torch")
-
+        print(initial_action)
         nu, next_nu, initial_nu = self.compute(state, action, next_state, next_action, initial_state, initial_action)
 
 
