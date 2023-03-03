@@ -1,9 +1,3 @@
-import numpy as np
-import torch
-import sys
-sys.path = "/Users/pankayarajpathmanathan/Desktop/My_Codes/Diverse_RL/Diverse_RL/MAQL/Value_DICE_Pytorch/main.py"
-
-
 from util.collect_trajectories import collect_data
 from model import DiscretePolicyNN, NN_Paramters, Discrete_Q_Function_NN
 from env.gridworld.environments import GridWalk
@@ -11,12 +5,14 @@ from env.gridworld.optimal_policy import Optim_Policy_Gridwalk
 from util.density_ratio import get_policy_ratio
 from env.gridworld.sub_optimal_policy import Sub_Optim_Policy_Gridwalk
 from value_dice import Algo_Param, Value_Dice
-
-
-
+import torch
+import numpy as np
+import os
 from util.count_frequency import collect_freqency
 from util.q_learning_to_policy import Q_learner_Policy
 
+import sys
+print(sys.path)
 
 policy_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[6, 6], non_linearity=torch.tanh, device= torch.device("cpu"))
 nu_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[6, 6], non_linearity=torch.tanh, device=torch.device("cpu"), l_r=0.0001)
@@ -34,8 +30,6 @@ policy = Discrete_Q_Function_NN(policy_param, save_path="q", load_path="t_q")
 policy.load("qx0")
 target_policy = Q_learner_Policy(policy, policy_param)
 
-
-#policy = Discrete_Q_Function_NN(policy_param)
 #target_policy = DiscretePolicyNN(policy_param, "1", "1")
 #target_policy.load("train/1")
 #target_policy.load("qx0")
@@ -46,7 +40,7 @@ V = Value_Dice(target_policy, nu_param, algo_param)
 
 Buffer = torch.load("behaviour_buffer")
 
-Target_Buffer = torch.load("target")
+#Target_Buffer = torch.load("test/target")
 
 
 #torch.save(Buffer, "behavior_sub_1")

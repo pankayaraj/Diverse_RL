@@ -7,7 +7,7 @@ from model import NN_Paramters
 from parameters import Algo_Param, Save_Paths, Load_Paths
 
 
-q_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=torch.device("cpu"), l_r=0.05)
+q_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[6, 6], non_linearity=torch.tanh, device=torch.device("cpu"), l_r=0.05)
 algo_param = Algo_Param()
 algo_param.gamma = 0.9
 
@@ -33,7 +33,7 @@ for i in range(10000):
         Q.hard_update()
     if i%save_interval == 0:
         print("saving")
-        Q.save("qy0", "target_qy0")
+        Q.save("qx0", "target_qx0")
     if i%eval_interval == 0:
         s = env2.reset()
         i_s = s
