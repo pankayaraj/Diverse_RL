@@ -5,20 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b02f43d0-efdc-4fac-8bbf-75cff0430a5f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/dual_dice.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/env/gridworld/environments.py" beforeDir="false" afterPath="$PROJECT_DIR$/env/gridworld/environments.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learn_q_function.py" beforeDir="false" afterPath="$PROJECT_DIR$/learn_q_function.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Q_models/qx0" beforeDir="false" afterPath="$PROJECT_DIR$/test/Q_models/qx0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/Q_models/qy0" beforeDir="false" afterPath="$PROJECT_DIR$/test/Q_models/qy0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/main_test_nu.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/main_test_nu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/nu_1" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/nu_2" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/nu_3" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/nu_4" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/q" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/value_dice.py" beforeDir="false" afterPath="$PROJECT_DIR$/value_dice.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/ratio/nu_1" beforeDir="false" afterPath="$PROJECT_DIR$/test/ratio/nu_1" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/ratio/nu_2" beforeDir="false" afterPath="$PROJECT_DIR$/test/ratio/nu_2" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/ratio/nu_3" beforeDir="false" afterPath="$PROJECT_DIR$/test/ratio/nu_3" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
