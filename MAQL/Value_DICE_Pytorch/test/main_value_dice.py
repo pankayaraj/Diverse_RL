@@ -1,7 +1,7 @@
 import numpy as np
 import torch
 import sys
-sys.path = "/Users/pankayarajpathmanathan/Desktop/My_Codes/Diverse_RL/Diverse_RL/MAQL/Value_DICE_Pytorch/main.py"
+
 
 
 from util.collect_trajectories import collect_data
@@ -31,7 +31,7 @@ env = GridWalk(grid_size, False)
 #behaviour_policy = Optim_Policy_Gridwalk(env, action_dim=5, eps_explore=0.2)
 
 policy = Discrete_Q_Function_NN(policy_param, save_path="q", load_path="t_q")
-policy.load("qx0")
+policy.load("Q_models/q")
 target_policy = Q_learner_Policy(policy, policy_param)
 
 
@@ -83,4 +83,4 @@ for i in range(no_iterations):
         # np.log(ratio[s[0][0]*grid_size+ s[0][1]]*get_policy_ratio(target_policy, behaviour_policy, s, a_n)) )
 
         print(V.debug())
-        V.nu_network.save("nu_2")
+        V.nu_network.save("nu_1")

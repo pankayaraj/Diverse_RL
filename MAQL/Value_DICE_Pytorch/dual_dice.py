@@ -8,7 +8,7 @@ class Algo_Param():
         self.gamma = gamma
 
 
-class Value_Dice():
+class Dice():
 
     def __init__(self, target_policy, nu_param, algo_param, deterministic_env=True, averege_next_nu = True,
                  discrete_policy=True, save_path = "temp", load_path="temp" ):
@@ -27,11 +27,11 @@ class Value_Dice():
         self.discrete_poliy = discrete_policy
 
         # exponential fucntion
-        self.f = lambda x: torch.exp(x)
+        self.f = lambda x: torch.abs(x)**2/2
 
-    def train_KL(self, data):
+    def train_dice(self, data):
 
-        self.debug_V = {"exp":None, "log_exp":None}
+        self.debug_V = {"x**2":None, "linear": None}
         state = data.state
         action = data.action
         next_state = data.next_state
@@ -56,11 +56,10 @@ class Value_Dice():
         unweighted_nu_loss_2 = initial_nu
 
 
-        loss_1 = torch.log(torch.sum(weight*unweighted_nu_loss_1)/torch.sum(weight))
+        loss_1 = torch.sum(weight*unweighted_nu_loss_1)/torch.sum(weight)
         loss_2 = torch.sum(weight*unweighted_nu_loss_2)/torch.sum(weight)
 
-        self.debug_V["exp"] = torch.sum(weight*unweighted_nu_loss_1)/torch.sum(weight)
-        self.debug_V["log_exp"] = loss_1
+        self.debug_V["x**2"] = torch.sum(weight*unweighted_nu_loss_1)/torch.sum(weight)
         self.debug_V["linear"] = loss_2
         #loss_1 = torch.log(torch.sum(unweighted_nu_loss_1))
         #loss_2 = torch.sum(unweighted_nu_loss_2)
@@ -72,7 +71,7 @@ class Value_Dice():
         self.nu_optimizer.step()
 
     def debug(self):
-        return self.debug_V["exp"], self.debug_V["log_exp"], self.debug_V["linear"]
+        return self.debug_V["x**2"], self.debug_V["linear"]
 
     def compute(self, state, action, next_state, next_action, initial_state, initial_action):
 
@@ -103,18 +102,17 @@ class Value_Dice():
         else:
             next_nu = self.nu_network(next_state, next_action)
 
-
         return nu, next_nu, initial_nu
 
-
-
-    def get_log_state_action_density_ratio(self, data):
+    def get_state_action_density_ratio(self, data):
 
         initial_action = self.target_policy.sample(data.initial_state)
         next_action = self.target_policy.sample(data.next_state)
 
         nu, next_nu, inital_nu = self.compute(data.state, data.action, data.next_state, next_action,
-                                              data.initial_state, initial_action)
+                                                  data.initial_state, initial_action)
+
+        return nu - self.algo_param.gamma * next_nu
 
 
-        return nu - self.algo_param.gamma*next_nu
+
