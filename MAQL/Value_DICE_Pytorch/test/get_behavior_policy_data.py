@@ -19,7 +19,7 @@ device = torch.device("cpu")
 
 policy_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[6, 6], non_linearity=torch.tanh, device= torch.device("cpu"))
 nu_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[6, 6], non_linearity=torch.tanh, device=torch.device("cpu"), l_r=0.0001)
-q_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=device, l_r=0.05)
+q_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[6, 6], non_linearity=torch.tanh, device=device, l_r=0.05)
 algo_param = Algo_Param()
 algo_param.gamma = 0.995
 
@@ -29,7 +29,7 @@ env = GridWalk(grid_size, False)
 #behaviour_policy = Optim_Policy_Gridwalk(env, action_dim=5, eps_explore=0.2)
 behaviour_Q  = Q_learning(env, q_param, algo_param)
 behaviour_policy = Q_learner_Policy(behaviour_Q.Q, q_param)
-behaviour_policy.Q.load("q")
+behaviour_policy.Q.load("Q_models/qy0")
 max_episodes = 100
 
 rew = 0
@@ -99,4 +99,4 @@ for i in range(1000):
 
         t += 1
 
-torch.save(M, "behaviour_buffer")
+torch.save(M, "Q_models/behaviour_buffer_3")
