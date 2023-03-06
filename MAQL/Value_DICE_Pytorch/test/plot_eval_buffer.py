@@ -71,9 +71,9 @@ ax.tick_params(axis='both', which='major', labelsize=14)
 for i in range(len(labels)):
 
 
-    rects1 = ax.bar(x[i] - 0.3, scenarios[0][labels[i]], 0.3, capsize=7, label="Scenario 1")
-    rects2 = ax.bar(x[i] - 0.0, scenarios[1][labels[i]], 0.3, capsize=7, label="Scenario 2")
-    rects3 = ax.bar(x[i] + 0.3, scenarios[2][labels[i]], 0.3, capsize=7, label="Scenario 3")
+    rects1 = ax.bar(x[i] - 0.3, scenarios[0][labels[i]], 0.3, capsize=7, label="Scenario 1", color="b")
+    rects2 = ax.bar(x[i] - 0.0, scenarios[1][labels[i]], 0.3, capsize=7, label="Scenario 2", color="g")
+    rects3 = ax.bar(x[i] + 0.3, scenarios[2][labels[i]], 0.3, capsize=7, label="Scenario 3", color="r")
 
     """
     rects1 = ax.bar(x - 0.8, scenarios[i]["KL"], 0.2, capsize=7,)
