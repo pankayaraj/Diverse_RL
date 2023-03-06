@@ -18,7 +18,7 @@ algo_param.gamma = 0.995
 
 
 V = Dice_Eval_Buffer( nu_param, algo_param)
-V.nu_network.load("nu_eval_buff/dice/nu_3")
+V.nu_network.load("nu_eval_buff/dice/nu_2")
 grid_size = 10
 
 Buffer = torch.load("behavior_sub_1")
@@ -36,4 +36,4 @@ w = torch.reshape(torch.Tensor(algo_param.gamma ** data.time_step), shape=(Buffe
 # print(grid_nu*w)
 
 x = torch.square(nu-1)
-print(torch.sum(nu * w) / torch.sum(w))
+print(torch.sum(x * w) / torch.sum(w))

@@ -34,7 +34,7 @@ nu = V.get_log_state_action_density_ratio(data)
 w = torch.reshape(torch.Tensor(algo_param.gamma ** data.time_step), shape=(Buffer.no_data, 1))
 # print(w)
 # print(grid_nu*w)
-print(torch.sum(nu * w) / torch.sum(w))
+print((torch.sum(nu * w) / torch.sum(w)).item())
 
 grid_nu = [[0 for i in range(grid_size)] for j in range(grid_size)]
 k = 0

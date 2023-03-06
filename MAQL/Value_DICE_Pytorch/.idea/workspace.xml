@@ -5,12 +5,11 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b02f43d0-efdc-4fac-8bbf-75cff0430a5f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/main_test_pearson_eval_buff.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/main_test_KL_eval_buff.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/main_value_dice_eval_buffer.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/value_dice_eval_buffer.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/test/distances.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/get_behavior_policy_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/get_behavior_policy_data.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/main_test_KL_eval_buff.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/main_test_KL_eval_buff.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/main_test_pearson_eval_buff.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/main_test_pearson_eval_buff.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/test/plot_eval_buffer.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/plot_eval_buffer.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -53,7 +52,7 @@
       <recent name="$PROJECT_DIR$/test" />
     </key>
   </component>
-  <component name="RunManager" selected="Python.main_test_pearson_eval_buff (1)">
+  <component name="RunManager" selected="Python.plot_eval_buffer">
     <configuration name="main_dice_eval_buffer" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
       <module name="Value_DICE_Pytorch" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -138,7 +137,7 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <configuration name="main_value_dice_eval_buffer" type="PythonConfigurationType" factoryName="Python" singleton="false" temporary="true" nameIsGenerated="true">
+    <configuration name="plot_eval_buffer" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="Value_DICE_Pytorch" />
       <option name="INTERPRETER_OPTIONS" value="" />
       <option name="PARENT_ENVS" value="true" />
@@ -150,7 +149,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/main_value_dice_eval_buffer.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/test/plot_eval_buffer.py" />
       <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
@@ -163,16 +162,16 @@
       <item itemvalue="Python.main_test_KL_eval_buff" />
       <item itemvalue="Python.main_test_pearson_eval_buff" />
       <item itemvalue="Python.main_test_pearson_eval_buff (1)" />
+      <item itemvalue="Python.plot_eval_buffer" />
       <item itemvalue="Python.main_dice_eval_buffer" />
-      <item itemvalue="Python.main_value_dice_eval_buffer" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Python.plot_eval_buffer" />
+        <item itemvalue="Python.main_test_KL_eval_buff" />
         <item itemvalue="Python.main_test_pearson_eval_buff (1)" />
         <item itemvalue="Python.main_test_pearson_eval_buff" />
-        <item itemvalue="Python.main_test_KL_eval_buff" />
         <item itemvalue="Python.main_dice_eval_buffer" />
-        <item itemvalue="Python.main_value_dice_eval_buffer" />
       </list>
     </recent_temporary>
   </component>
