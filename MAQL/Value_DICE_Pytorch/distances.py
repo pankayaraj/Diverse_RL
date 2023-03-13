@@ -48,7 +48,7 @@ def Chernoff(D, data, no_data, gamma=0.995, theta=2):
     nu = D.get_state_action_density_ratio(data)
     x = 1 - nu**((theta+1)/2)
     w_theta = 4 / (1-theta**2)
-    print(w_theta)
+    
     return (w_theta * torch.sum(x * w) / torch.sum(w)).item()
 
 def Alpha_Beta(D, data, no_data, gamma=0.995, theta=2, phi=2):
