@@ -2,16 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="6351bbfc-c39e-4d90-8fd6-0e23f85f4c54" name="Default Changelist" comment="">
-      <change beforePath="$PROJECT_DIR$/MAQL/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MAQL/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MAQL/log_ratio/log_ratio.py" beforeDir="false" afterPath="$PROJECT_DIR$/MAQL/log_ratio/log_ratio.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MAQL/main/maql.py" beforeDir="false" afterPath="$PROJECT_DIR$/MAQL/main/maql.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MAQL/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/MAQL/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MAQL/test/memory/l_mem" beforeDir="false" afterPath="$PROJECT_DIR$/MAQL/test/memory/l_mem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MAQL/test/memory/mem" beforeDir="false" afterPath="$PROJECT_DIR$/MAQL/test/memory/mem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MAQL/test/nu_fun/nu_0" beforeDir="false" afterPath="$PROJECT_DIR$/MAQL/test/nu_fun/nu_0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MAQL/test/q_val/q_0" beforeDir="false" afterPath="$PROJECT_DIR$/MAQL/test/q_val/q_0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MAQL/test/tar_q_val/target_q_0" beforeDir="false" afterPath="$PROJECT_DIR$/MAQL/test/tar_q_val/target_q_0" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MAQL/test/test.py" beforeDir="false" afterPath="$PROJECT_DIR$/MAQL/test/test.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Value_DICE_Pytorch/epsilon_greedy.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/Value_DICE_Pytorch/multi_q.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Value_DICE_Pytorch/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/Value_DICE_Pytorch/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,11 +20,12 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">
-    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
-    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/MAQL" />
-  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "last_opened_file_path": "/media/pankayaraj/Storage/Diverse_RL"
+  }
+}]]></component>
   <component name="RunManager">
     <configuration name="test" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="MAQL" />

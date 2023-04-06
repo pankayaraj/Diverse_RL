@@ -344,7 +344,7 @@ class Zeta_NN(BaseNN):
         self.state_action = state_action
 
         if state_action:
-            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim + + num_z
+            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim +  num_z
         else:
             layer_input_dim = self.nn_params.state_dim + + num_z
 
