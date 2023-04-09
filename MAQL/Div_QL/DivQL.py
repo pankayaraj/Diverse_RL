@@ -1,6 +1,7 @@
 import torch
 import numpy as np
 from log_ratio import Log_Ratio
+from ratio import Ratio
 
 from model import Discrete_Q_Function_NN_Z
 from parameters import NN_Paramters, Algo_Param, Save_Paths, Load_Paths
@@ -22,14 +23,12 @@ class DivQL():
         self.q_nn_param = q_nn_param
         self.algo_param = algo_param
         self.nu_param = nu_param
-
         self.num_z = num_z
 
         self.max_episode_length = max_episode_length
 
         self.save_path = Save_Paths()
         self.load_path = Load_Paths()
-
 
         self.inital_state = None
         self.time_step = 0
@@ -45,9 +44,10 @@ class DivQL():
         self.loss_function = torch.nn.functional.mse_loss
         self.Q_optim = torch.optim.Adam(self.Q.parameters(), self.q_nn_param.l_r)
 
-        self.log_ratio = Log_Ratio(self.nu_param, self.algo_param, deterministic_env=deterministic_env, num_z=self.num_z, averege_next_nu=average_next_nu,
+        self.log_ratio = Log_Ratio(self.nu_param, self.algo_param,  num_z=self.num_z,
                              save_path=save_path.nu_path, load_path=load_path.nu_path)
-
+        self.ratio  = Ratio(self.nu_param, self.algo_param,  num_z=self.num_z,
+                             save_path=save_path.nu_path, load_path=load_path.nu_path)
 
         #q learning
         self.memory = {}
@@ -64,36 +64,25 @@ class DivQL():
 
         self.L = 0
         self.T = 0
-    def get_target_policy(self, target=True):
-        #this is the current policy the agent should evaluate against given the data
-        #choose weather to give the current Q or the target Q from dual_Q
-        if target:
-            target_policy = Q_learner_Policy(self.Target_Q, self.q_nn_param)
-        else:
-            target_policy = Q_learner_Policy(self.Q, self.q_nn_param)
 
-        return target_policy
 
     def train_log_ratio(self, z, fixed_ratio_memory=False):
         #here data must be off the ratio's memory
 
         if fixed_ratio_memory:
-            data = self.log_ratio_memory.sample(self.batch_size)
+            data1 = None
+            data2 = None
         else:
-            data = self.sample_for_log_ratio(self.batch_size, current_z_index=z)
-
-
-        target_policy = self.get_target_policy(target=True)
+            data1 = self.sample_for_ratio_current(self.batch_size, current_z_index=z)
+            data2 = self.sample_for_log_others(self.batch_size, current_z_index=z)
 
         z_hot_vec = np.array([0.0 for i in range(self.num_z)])
         z_hot_vec[z] = 1
-
         z_arr = np.array([z_hot_vec for _ in range(self.batch_size)])
 
+        self.log_ratio.train_ratio(data1, data2, z_arr )
 
-        self.log_ratio.train_ratio(data, z_arr, target_policy)
-
-    def get_log_ratio(self, data, z_arr):
+    def get_log_ratio_others(self, data, z_arr):
         #here data can be off Q learning's memory
         target_policy = self.get_target_policy(target=True)
         return self.log_ratio.get_log_state_action_density_ratio(data, z_arr, target_policy)
@@ -102,9 +91,9 @@ class DivQL():
     def push_ratio_memory(self, state, action, reward, next_state, inital_state, time_step, optim_traj):
         self.log_ratio_memory.push(state, action, reward, next_state, inital_state, time_step, optim_traj)
 
-    def sample_for_log_ratio(self, batch_size, current_z_index):
+    def sample_for_log_others(self, batch_size, current_z_index):
         n = batch_size//(self.num_z-1)
-        
+
         mem_indices = [i and i != current_z_index for i in range(self.num_z)     ]
 
         mem_sample_size = [n for i in range(self.num_z-1)]
@@ -118,8 +107,14 @@ class DivQL():
         for i in range(self.num_z-1):
             samples.append(self.memory[mem_indices[i]].sample(mem_sample_size[i]))
 
+        data = combine_transition_tuples(samples)
+        return data
 
-        return combine_transition_tuples(samples)
+    def sample_for_ratio_current(self, batch_size, current_z_index):
+
+        data = self.log_ratio_memory[current_z_index].sample(batch_size)
+
+        return data
 
     def save(self, q_path, target_q_path, nu_path):
         self.Q.save(q_path)
@@ -294,6 +289,17 @@ class DivQL():
         for i in range(self.batch_size):
             state = self.step(state)
         return state
+
+
+    def get_target_policy(self, target=True):
+        #this is the current policy the agent should evaluate against given the data
+        #choose weather to give the current Q or the target Q from dual_Q
+        if target:
+            target_policy = Q_learner_Policy(self.Target_Q, self.q_nn_param)
+        else:
+            target_policy = Q_learner_Policy(self.Q, self.q_nn_param)
+
+        return target_policy
 
 
 
