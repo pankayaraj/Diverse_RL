@@ -162,9 +162,13 @@ class DivQL():
 
             state = next_state
 
+            if self.T%100 == 0:
+                self.eval(20, R_max)
+
             if self.T > 1000:
                 self.train(z, True)
-                self.T = 0
+                self.train_log_ratio(z)
+                self.train_ratio(z)
 
         if R_max < 0.8*R:
             for i in range(len(tuples)):
@@ -233,15 +237,6 @@ class DivQL():
             for t in tuples:
                 self.memory[z].push(t[0], t[1], t[2], t[3], t[4], t[5], t[6])
 
-    def get_action(self, state, z):
-        # converting z into one hot vector
-        z_hot_vec = np.array([0.0 for i in range(self.num_z)])
-        z_hot_vec[z] = 1
-
-
-        q_values = self.Q.get_value(state, z_hot_vec, format="numpy")
-        action_scaler = np.argmax(q_values)
-        return action_scaler
 
     def train(self, z, log_ratio_update=False):
 
@@ -263,20 +258,13 @@ class DivQL():
 
 
         z_arr = np.array([z_hot_vec for _ in range(batch_size)])
-
-
         non_final_mask = torch.tensor(tuple(map(lambda s: s is not None,
                                                 batch.next_state)), device=self.q_nn_param.device, dtype=torch.bool)
-
         non_final_next_states = torch.Tensor([s for s in next_state if s is not None]).to(self.q_nn_param.device)
-
         optim_mask = torch.Tensor(optim_traj).bool()
-
-
 
         #get only the q value relevant to the actions
         state_action_values = self.Q.get_value(state, z_arr).gather(1, action_scaler)
-
         with torch.no_grad():
             next_state_action_values = torch.zeros(batch_size, device=self.q_nn_param.device)
             next_state_action_values[non_final_mask] = self.Target_Q.get_value(non_final_next_states, z_arr).max(1)[0]
@@ -285,17 +273,14 @@ class DivQL():
       
         with torch.no_grad():
             log_ratio = self.get_log_ratio(batch, z_arr)
+            ratio = self.get_ratio(batch, z_arr)
+
+            #since log ratio is maximised only for optimal trajectories
             effective_log_ratio = log_ratio.squeeze()*optim_mask
-
-        
-
-
-        
+            effective_ratio = ratio.squeeze()*optim_mask
 
 
         expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + self.algo_param.alpha*effective_log_ratio.unsqueeze(1)
-
-
         loss = self.loss_function( state_action_values, expected_state_action_values)
 
         self.Q_optim.zero_grad()
@@ -305,8 +290,8 @@ class DivQL():
         if log_ratio_update == True:
             self.train_log_ratio(z)
 
-        self.L = np.linalg.norm(log_ratio.sum().item()/batch_size)
-        self.log_ratio.change_lr(np.linalg.norm(log_ratio.sum().item()/batch_size))
+        #self.L = np.linalg.norm(log_ratio.sum().item()/batch_size)
+        #self.log_ratio.change_lr(np.linalg.norm(log_ratio.sum().item()/batch_size))
 
     def hard_update(self):
         self.Target_Q.load_state_dict(self.Q.state_dict())
@@ -350,10 +335,22 @@ class DivQL():
             target_policy = Q_learner_Policy(self.Target_Q, self.q_nn_param)
         else:
             target_policy = Q_learner_Policy(self.Q, self.q_nn_param)
-
         return target_policy
 
 
+    def get_action(self, state, z):
+        # converting z into one hot vector
+        z_hot_vec = np.array([0.0 for i in range(self.num_z)])
+        z_hot_vec[z] = 1
+        q_values = self.Q.get_value(state, z_hot_vec, format="numpy")
+        action_scaler = np.argmax(q_values)
+        return action_scaler
+
+    def get_log_ratio(self, data, z_arr):
+        return self.log_ratio.get_log_state_action_density_ratio(data, z_arr)
+
+    def get_ratio(self, data, z_arr):
+        return self.ratio.get_state_action_density_ratio(data, z_arr)
     def save(self, q_path, target_q_path, nu_path1, nu_path2):
         self.Q.save(q_path)
         self.Target_Q.save(target_q_path)
