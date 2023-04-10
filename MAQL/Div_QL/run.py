@@ -39,7 +39,7 @@ env_tar = GridWalk(grid_size, False)
 #behaviour_policy = Q_learner_Policy(behaviour_Q.Q, q_param)
 #behaviour_policy.Q.load("q")
 
-update_interval = 1
+update_interval = 100
 save_interval = 10
 eval_interval = 10
 max_episodes = 100
@@ -50,13 +50,14 @@ for i in range(100):
     print(i)
     M.step(80)
 for i in range(1000):
+
     M.step(80)
 
     if i % update_interval == 0:
         M.hard_update()
     if i % save_interval == 0:
         print("saving")
-        M.save("q2", "target_q2", "nu2")
+        M.save("q0", "target_q0", "nu0_1", "nu0_2")
 
     if i % eval_interval == 0:
         z = np.random.randint(0, num_z)

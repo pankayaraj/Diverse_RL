@@ -165,7 +165,10 @@ class DivQL():
             if self.T%100 == 0:
                 self.eval(20, R_max)
 
+            if self.T%1000 == 0:
+                self.hard_update()
             if self.T > 1000:
+
                 self.train(z, True)
                 self.train_log_ratio(z)
                 self.train_ratio(z)
@@ -182,9 +185,9 @@ class DivQL():
 
 
     def eval(self, eval_steps, R_max):
+
         #this function is to push into the memory of teh evaluation buffer for ratio computation
         for t in range(eval_steps):
-
             state = self.env.reset()
             inital_state = state
             time_step = 0
@@ -235,7 +238,7 @@ class DivQL():
                 for i in range(len(tuples)):
                     tuples[i].append(False)
             for t in tuples:
-                self.memory[z].push(t[0], t[1], t[2], t[3], t[4], t[5], t[6])
+                self.log_ratio_memory[z].push(t[0], t[1], t[2], t[3], t[4], t[5], t[6])
 
 
     def train(self, z, log_ratio_update=False):
@@ -287,11 +290,8 @@ class DivQL():
         loss.backward()
         self.Q_optim.step()
 
-        if log_ratio_update == True:
-            self.train_log_ratio(z)
 
-        #self.L = np.linalg.norm(log_ratio.sum().item()/batch_size)
-        #self.log_ratio.change_lr(np.linalg.norm(log_ratio.sum().item()/batch_size))
+
 
     def hard_update(self):
         self.Target_Q.load_state_dict(self.Q.state_dict())
