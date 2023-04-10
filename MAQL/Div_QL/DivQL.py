@@ -56,8 +56,10 @@ class DivQL():
         self.memory_capacity = memory_capacity
 
         #log ratio
-        self.log_ratio_memory = Replay_Memory(log_ratio_memory_capacity)
-        self.log_ratio_memory_capacitry = log_ratio_memory_capacity
+        self.log_ratio_memory = {}
+        for i in range(num_z):
+            self.log_ratio_memory[i] = Replay_Memory(log_ratio_memory_capacity)
+        self.log_ratio_memory_capacity = log_ratio_memory_capacity
 
         self.batch_size = batch_size
         self.env = env
@@ -82,50 +84,29 @@ class DivQL():
 
         self.log_ratio.train_ratio(data1, data2, z_arr )
 
+    def train_ratio(self, z, fixed_ratio_memory=False):
+        #here data must be off the ratio's memory
+
+        if fixed_ratio_memory:
+            data1 = None
+            data2 = None
+        else:
+            data1 = self.sample_for_ratio_current(self.batch_size, current_z_index=z)
+            data2 = self.sample_for_log_others(self.batch_size, current_z_index=z)
+
+        z_hot_vec = np.array([0.0 for i in range(self.num_z)])
+        z_hot_vec[z] = 1
+        z_arr = np.array([z_hot_vec for _ in range(self.batch_size)])
+
+        self.ratio.train_dice(data1, data2, z_arr)
     def get_log_ratio_others(self, data, z_arr):
         #here data can be off Q learning's memory
         target_policy = self.get_target_policy(target=True)
         return self.log_ratio.get_log_state_action_density_ratio(data, z_arr, target_policy)
 
     #this function is in case we need to data externally for the log ratio training memory
-    def push_ratio_memory(self, state, action, reward, next_state, inital_state, time_step, optim_traj):
-        self.log_ratio_memory.push(state, action, reward, next_state, inital_state, time_step, optim_traj)
-
-    def sample_for_log_others(self, batch_size, current_z_index):
-        n = batch_size//(self.num_z-1)
-
-        mem_indices = [i and i != current_z_index for i in range(self.num_z)     ]
-
-        mem_sample_size = [n for i in range(self.num_z-1)]
-
-
-        if n*(self.num_z-1) != batch_size:
-            mem_sample_size[-1] += batch_size - (self.num_z-1)*(n)
-
-
-        samples = []
-        for i in range(self.num_z-1):
-            samples.append(self.memory[mem_indices[i]].sample(mem_sample_size[i]))
-
-        data = combine_transition_tuples(samples)
-        return data
-
-    def sample_for_ratio_current(self, batch_size, current_z_index):
-
-        data = self.log_ratio_memory[current_z_index].sample(batch_size)
-
-        return data
-
-    def save(self, q_path, target_q_path, nu_path):
-        self.Q.save(q_path)
-        self.Target_Q.save(target_q_path)
-        self.log_ratio.nu_network.save(nu_path)
-
-    def load(self, q_path, target_q_path, nu_path):
-        self.Q.load(q_path)
-        self.Target_Q.load(target_q_path)
-        self.log_ratio.nu_network.load(nu_path)
-
+    def push_ratio_memory(self, current_index, state, action, reward, next_state, inital_state, time_step, optim_traj):
+        self.log_ratio_memory[current_index].push(state, action, reward, next_state, inital_state, time_step, optim_traj)
 
     def step(self, R_max):
 
@@ -140,17 +121,14 @@ class DivQL():
         tuples = []
         R = 0
 
+        z = np.random.randint(0, self.num_z)
+        # converting z into one hot vector
+        z_hot_vec = np.array([0.0 for i in range(self.num_z)])
+        z_hot_vec[z] = 1
+
         for i in range(self.max_episode_length):
             self.T += 1
-            z = np.random.randint(0, self.num_z)
-            # converting z into one hot vector
-            z_hot_vec = np.array([0.0 for i in range(self.num_z)])
-            z_hot_vec[z] = 1
-
-
             q_values = self.Target_Q.get_value(state, z_hot_vec, format="numpy")
-
-
             action, self.steps_done, self.epsilon = epsilon_greedy(q_values, self.steps_done, self.epsilon, self.action_dim)
 
             next_state, reward, done, _ = self.env.step(action)
@@ -159,10 +137,6 @@ class DivQL():
             #converting the action for buffer as one hot vector
             sample_hot_vec = np.array([0.0 for i in range(self.q_nn_param.action_dim)])
             sample_hot_vec[action] = 1
-
-
-
-
             action = sample_hot_vec
 
             self.time_step += 1
@@ -190,8 +164,9 @@ class DivQL():
 
             if self.T > 1000:
                 self.train(z, True)
+                self.T = 0
 
-        if R_max < 0.8*R_max:
+        if R_max < 0.8*R:
             for i in range(len(tuples)):
                 tuples[i].append(True)
         else:
@@ -200,6 +175,63 @@ class DivQL():
         for t in tuples:
             self.memory[z].push(t[0], t[1], t[2], t[3], t[4], t[5], t[6])
 
+
+
+    def eval(self, eval_steps, R_max):
+        #this function is to push into the memory of teh evaluation buffer for ratio computation
+        for t in range(eval_steps):
+
+            state = self.env.reset()
+            inital_state = state
+            time_step = 0
+            R = 0
+
+            z = np.random.randint(0, self.num_z)
+            # converting z into one hot vector
+            z_hot_vec = np.array([0.0 for i in range(self.num_z)])
+            z_hot_vec[z] = 1
+            tuples = []
+            for i in range(self.max_episode_length):
+                q_values = self.Target_Q.get_value(state, z_hot_vec, format="numpy")
+                action_scaler = np.argmax(q_values)
+                next_state, reward, done, _ = self.env.step(action_scaler)
+                R += reward
+                # converting the action for buffer as one hot vector
+                sample_hot_vec = np.array([0.0 for i in range(self.q_nn_param.action_dim)])
+                sample_hot_vec[action_scaler] = 1
+                action = sample_hot_vec
+
+                time_step += 1
+
+                if done:
+                    next_state = None
+                    tuples.append([state, action, reward, next_state, self.inital_state, self.time_step])
+                    state = self.env.reset()
+                    self.inital_state = state
+                    self.time_step = 0
+
+                    break
+
+                if self.time_step == self.max_episode_length - 1:
+                    tuples.append([state, action, reward, next_state, self.inital_state, self.time_step])
+                    state = self.env.reset()
+                    self.inital_state = state
+                    self.time_step = 0
+
+                    break
+
+                tuples.append([state, action, reward, next_state, self.inital_state, self.time_step])
+
+                state = next_state
+
+            if R_max < 0.8 * R:
+                for i in range(len(tuples)):
+                    tuples[i].append(True)
+            else:
+                for i in range(len(tuples)):
+                    tuples[i].append(False)
+            for t in tuples:
+                self.memory[z].push(t[0], t[1], t[2], t[3], t[4], t[5], t[6])
 
     def get_action(self, state, z):
         # converting z into one hot vector
@@ -290,6 +322,26 @@ class DivQL():
             state = self.step(state)
         return state
 
+    def sample_for_log_others(self, batch_size, current_z_index):
+        n = batch_size//(self.num_z-1)
+        mem_indices = [i and i != current_z_index for i in range(self.num_z)]
+        mem_sample_size = [n for i in range(self.num_z-1)]
+        if n*(self.num_z-1) != batch_size:
+            mem_sample_size[-1] += batch_size - (self.num_z-1)*(n)
+        samples = []
+        for i in range(self.num_z-1):
+            samples.append(self.memory[mem_indices[i]].sample(mem_sample_size[i]))
+
+        data = combine_transition_tuples(samples)
+        return data
+
+    def sample_for_ratio_current(self, batch_size, current_z_index):
+        data = self.log_ratio_memory[current_z_index].sample(batch_size)
+        return data
+
+    def sample_for_Q(self, batch_size, current_z_index):
+        data = self.memory[current_z_index].sample(batch_size)
+        return data
 
     def get_target_policy(self, target=True):
         #this is the current policy the agent should evaluate against given the data
@@ -302,6 +354,15 @@ class DivQL():
         return target_policy
 
 
+    def save(self, q_path, target_q_path, nu_path1, nu_path2):
+        self.Q.save(q_path)
+        self.Target_Q.save(target_q_path)
+        self.log_ratio.nu_network.save(nu_path1)
+        self.ratio.nu_network.save(nu_path2)
 
-
+    def load(self, q_path, target_q_path, nu_path1, nu_path2):
+        self.Q.load(q_path)
+        self.Target_Q.load(target_q_path)
+        self.log_ratio.nu_network.load(nu_path1)
+        self.ratio.nu_network.load(nu_path1)
 
