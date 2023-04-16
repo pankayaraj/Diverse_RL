@@ -315,7 +315,7 @@ class DivQL():
             mem_sample_size[-1] += batch_size - (self.num_z-1)*(n)
         samples = []
         for i in range(self.num_z-1):
-            samples.append(self.memory[mem_indices[i]].sample(mem_sample_size[i]))
+            samples.append(self.log_ratio_memory[mem_indices[i]].sample(mem_sample_size[i]))
 
         data = combine_transition_tuples(samples)
         return data

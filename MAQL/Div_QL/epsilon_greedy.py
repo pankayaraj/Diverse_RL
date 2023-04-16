@@ -5,6 +5,7 @@ import math
 def epsilon_greedy(q_values, steps_done, epsilon, action_dim, eps_end= 0.05, eps_decay=0.99):
 
     rand = np.random.random()
+
     epsilon = max(epsilon * eps_decay, eps_end)
     #epsilon = eps_end + (eps_start - eps_end) * math.exp(-1 * steps_done / eps_decay)
     if rand < epsilon:

@@ -281,9 +281,9 @@ class Nu_NN(BaseNN):
         self.state_action = state_action
         # Hidden layers
         if state_action:
-            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim + + num_z
+            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim + num_z
         else:
-            layer_input_dim = self.nn_params.state_dim + + num_z
+            layer_input_dim = self.nn_params.state_dim + num_z
         hidden_layer_dim = self.nn_params.hidden_layer_dim
         for i, dim in enumerate(hidden_layer_dim):
             l = nn.Linear(layer_input_dim, dim)
@@ -330,6 +330,59 @@ class Nu_NN(BaseNN):
 
         return NU
         #NU = torch.clamp(self.nu(inp), 70, -70)
+
+
+class Nu_NN_1(BaseNN):
+
+    def __init__(self, nn_params, save_path, load_path, num_z, state_action=True):
+        super(Nu_NN_1, self).__init__(save_path=save_path, load_path=load_path)
+        self.layers = nn.ModuleList([])
+        self.nn_params = nn_params
+        self.non_lin = self.nn_params.non_linearity
+        self.state_action = state_action
+        # Hidden layers
+        if state_action:
+            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim
+        else:
+            layer_input_dim = self.nn_params.state_dim
+        hidden_layer_dim = self.nn_params.hidden_layer_dim
+        for i, dim in enumerate(hidden_layer_dim):
+            l = nn.Linear(layer_input_dim, dim)
+            self.weight_init(l, self.nn_params.weight_initializer, self.nn_params.bias_initializer)
+            self.layers.append(l)
+            layer_input_dim = dim
+
+        # Final Layer
+        self.nu = nn.Linear(layer_input_dim, 1)
+        self.weight_init(self.nu, self.nn_params.weight_initializer, self.nn_params.bias_initializer)
+
+        self.to(self.nn_params.device)
+
+    def forward(self, state, action):
+
+        if type(state) != torch.Tensor:
+            state = torch.Tensor(state).to(self.nn_params.device)
+
+        if type(action) != torch.Tensor:
+            action = torch.Tensor(action).to(self.nn_params.device)
+
+
+        if self.state_action:
+            if type(action) != torch.Tensor:
+                action = torch.Tensor(action).to(self.nn_params.device)
+            inp = torch.cat((state, action), dim=1)
+        else:
+            inp = state
+
+        for i, layer in enumerate(self.layers):
+            if self.non_lin != None:
+                inp = self.non_lin(layer(inp))
+            else:
+                inp = layer(inp)
+        NU = self.nu(inp)
+
+        return NU
+
 
 class Zeta_NN(BaseNN):
     """
@@ -457,7 +510,7 @@ class Discrete_Q_Function_NN(BaseNN):
         self.non_lin = self.nn_params.non_linearity
 
         # Hidden layers
-        layer_input_dim = self.nn_params.state_dim + 1 #to add the latent variable and state as an input
+        layer_input_dim = self.nn_params.state_dim  #to add the latent variable and state as an input
         hidden_layer_dim = self.nn_params.hidden_layer_dim
         for i, dim in enumerate(hidden_layer_dim):
             l = nn.Linear(layer_input_dim, dim)
@@ -474,15 +527,15 @@ class Discrete_Q_Function_NN(BaseNN):
     def forward(self, state):
         if type(state) != torch.Tensor:
             state = torch.Tensor(state).to(self.nn_params.device)
-
-
         inp =state
 
         for i, layer in enumerate(self.layers):
+
             if self.non_lin != None:
                 inp = self.non_lin(layer(inp))
             else:
                 inp = layer(inp)
+
         Q_s_a = self.Q_value(inp)
 
         return Q_s_a
