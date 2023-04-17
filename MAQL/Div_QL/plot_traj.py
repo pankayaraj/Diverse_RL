@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import numpy as np
 import torch
 
-n =  4
+n = 4
 
 file = {4:"1", 6:"2", 10:"3"}
 Trajectories = torch.load("gradual_models/" + file[n] + "/Trajectories")
@@ -42,4 +42,4 @@ for i in range(len(Trajectories)):
 
 ax.imshow(Grid,)
 plt.title("z = " + str(n))
-plt.savefig("gradual_models/" + str(n) +".png")
+plt.savefig("gradual_models/" + str(n) + "_KL" +".png")

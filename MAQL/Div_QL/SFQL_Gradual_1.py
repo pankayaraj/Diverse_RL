@@ -2,17 +2,18 @@ import torch
 import numpy as np
 from log_ratio_1 import Log_Ratio
 from ratio_1 import Ratio
+from copy import deepcopy
 
-from model import Discrete_Q_Function_NN
+from model import Discrete_Q_Function_NN, SF_NN
 from parameters import NN_Paramters, Algo_Param, Save_Paths, Load_Paths
 from memory import Replay_Memory, combine_transition_tuples
 from epsilon_greedy import epsilon_greedy
 from util.q_learning_to_policy import Q_learner_Policy
 
 
-class DivQL_Gradual():
+class SFQL_Gradual():
 
-    def __init__(self, env,  inital_log_buffer, q_nn_param, nu_param, algo_param, num_z, optim_alpha=0.8, max_episode_length =100, memory_capacity =10000,
+    def __init__(self, env,  q_nn_param, nu_param, algo_param, num_z, optim_alpha=0.8, max_episode_length =100, memory_capacity =10000,
                  log_ratio_memory_capacity=5000, batch_size=400, save_path = Save_Paths(), load_path= Load_Paths(),
                  deterministic_env=True, average_next_nu = True):
 
@@ -54,10 +55,10 @@ class DivQL_Gradual():
 
 
         for i in range(self.num_z):
-            self.SF[i] = Discrete_Q_Function_NN(nn_params=q_nn_param,
+            self.SF[i] = SF_NN(nn_params=q_nn_param,
                                             save_path= self.save_path.q_path, load_path=self.load_path.q_path, )
 
-            self.Target_SF[i] = Discrete_Q_Function_NN(nn_params=q_nn_param,
+            self.Target_SF[i] = SF_NN(nn_params=q_nn_param,
                                             save_path= self.save_path.q_path, load_path=self.load_path.q_path, )
 
             self.Target_SF[i].load_state_dict(self.SF[i].state_dict())
@@ -175,22 +176,42 @@ class DivQL_Gradual():
 
         #get only the q value relevant to the actions
         state_action_values = self.Q[z].get_value(state).gather(1, action_scaler)
+        SF_values = self.SF[z].get_value(state, action)
+
+
+
         with torch.no_grad():
             next_state_action_values = torch.zeros(batch_size, device=self.q_nn_param.device)
             next_state_action_values[non_final_mask] = self.Target_Q[z].get_value(non_final_next_states).max(1)[0]
+
+            next_q_values = self.Target_Q[z].get_value(non_final_next_states)
+            max = torch.argmax(next_q_values, dim=1)
+            non_final_next_action = torch.zeros(next_q_values.shape)
+            non_final_next_action.scatter_(1, max.unsqueeze(1), 1)
+
+            next_SF_values = self.Target_SF[z].get_value(non_final_next_states, non_final_next_action)
+
+
             #now there will be a zero if it is the final state and q*(n_s,n_a) is its not None
 
-      
+        expected_SF_values = (self.algo_param.gamma * next_SF_values) + state  #here state itself is treated as sucessor feture /phi
+        loss_SF = self.loss_function(SF_values, expected_SF_values.float())
+        self.SF_optim[z].zero_grad()
+        loss_SF.backward()
+        self.SF_optim[z].step()
+
+
+        #find the distance between past and present sf
+
         with torch.no_grad():
-            log_ratio = self.get_log_ratio(batch, z_arr, z)
-            ratio = self.get_ratio(batch, z_arr, z)
+            distances = []
+            for i in range(self.current_index):
+                SF_values_other = self.SF[i].get_value(state, action)
+                distances.append(torch.norm( (SF_values - SF_values_other).float(), dim=1 ))
 
-            #since log ratio is maximised only for optimal trajectories
-            effective_log_ratio = log_ratio.squeeze()*optim_mask
-            effective_ratio = ratio.squeeze()*optim_mask
+            min_dist = torch.stack(distances).min(dim=0)[0]
 
-
-        expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + self.algo_param.alpha*effective_log_ratio.unsqueeze(1)
+        expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + self.algo_param.alpha*min_dist
         loss = self.loss_function( state_action_values, expected_state_action_values)
 
         self.Q_optim[z].zero_grad()
@@ -239,8 +260,7 @@ class DivQL_Gradual():
 
     def get_action(self, state, z):
         # converting z into one hot vector
-        z_hot_vec = np.array([0.0 for i in range(self.num_z)])
-        z_hot_vec[z] = 1
+
         q_values = self.Q[z].get_value(state, format="numpy")
         action_scaler = np.argmax(q_values)
         return action_scaler

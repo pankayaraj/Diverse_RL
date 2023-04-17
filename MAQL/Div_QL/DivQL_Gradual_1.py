@@ -17,7 +17,9 @@ class DivQL_Gradual():
                  deterministic_env=True, average_next_nu = True):
 
         #self.distance = "KL"
-        self.distance = "Jeffrey"
+        #self.distance = "Jeffrey"
+        #self.distance = "Pearson"
+        self.distance = "Exponential"
 
         self.state_dim = q_nn_param.state_dim
         self.action_dim = q_nn_param.action_dim
@@ -304,6 +306,8 @@ class DivQL_Gradual():
             next_state_action_values[non_final_mask] = self.Target_Q[z].get_value(non_final_next_states).max(1)[0]
             #now there will be a zero if it is the final state and q*(n_s,n_a) is its not None
 
+
+
       
         with torch.no_grad():
             log_ratio = self.get_log_ratio(batch, z_arr, z)
@@ -318,7 +322,18 @@ class DivQL_Gradual():
         elif self.distance == "Jeffrey":
             expected_state_action_values = (self.algo_param.gamma * next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + \
                                            self.algo_param.alpha * (
-                                               (effective_ratio - 1)*effective_log_ratio.unsqueeze(1))
+                                               (effective_ratio.unsqueeze(1) - 1)*effective_log_ratio.unsqueeze(1))
+
+        elif self.distance == "Pearson":
+            expected_state_action_values = (self.algo_param.gamma * next_state_action_values).unsqueeze(
+                1) + reward.unsqueeze(1) + \
+                                           self.algo_param.alpha * (
+                                                   (effective_ratio.unsqueeze(1) - 1)**2)
+        elif self.distance == "Exponential":
+            expected_state_action_values = (self.algo_param.gamma * next_state_action_values).unsqueeze(
+                1) + reward.unsqueeze(1) + \
+                                           self.algo_param.alpha * (
+                                                   effective_log_ratio.unsqueeze(1) ** 2)
 
         loss = self.loss_function( state_action_values, expected_state_action_values)
 

@@ -28,7 +28,7 @@ q_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[10, 10], non
 algo_param = Algo_Param(hard_update_interval=1)
 algo_param.gamma = 0.9
 num_z = 10
-Z = [1, 2, 3, 4, 5, 6, 7, 8, 9]
+Z = [1, 2, 3, 4, 5, 6, 7, 8, 9 ]
 
 grid_size = 10
 env = GridWalk(grid_size, False)
@@ -73,7 +73,7 @@ for z in Z:
             M.hard_update(z)
         if i % save_interval == 0:
             print("saving")
-            M.save(z,"gradual_models/3/q" + str(z), "gradual_models/3/target_q" + str(z), "gradual_models/3/nu" + str(z) + "_1", "gradual_models/3/nu" + str(z) + "_2")
+            M.save(z,"gradual_models/6/q" + str(z), "gradual_models/6/target_q" + str(z), "gradual_models/6/nu" + str(z) + "_1", "gradual_models/6/nu" + str(z) + "_2")
 
         if i % eval_interval == 0:
 

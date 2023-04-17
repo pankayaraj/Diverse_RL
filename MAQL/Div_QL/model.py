@@ -546,3 +546,56 @@ class Discrete_Q_Function_NN(BaseNN):
             return self.forward(state)
         elif format == "numpy":
             return self.forward(state).cpu().detach().numpy()
+
+
+class SF_NN(BaseNN):
+
+    def __init__(self, nn_params, save_path, load_path):
+
+        super(SF_NN, self).__init__(save_path=save_path, load_path=load_path)
+        self.layers = nn.ModuleList([])
+        self.nn_params = nn_params
+        self.non_lin = self.nn_params.non_linearity
+
+        # Hidden layers
+        layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim
+        hidden_layer_dim = self.nn_params.hidden_layer_dim
+        for i, dim in enumerate(hidden_layer_dim):
+            l = nn.Linear(layer_input_dim, dim)
+            self.weight_init(l, self.nn_params.weight_initializer, self.nn_params.bias_initializer)
+            self.layers.append(l)
+            layer_input_dim = dim
+
+        #Final Layer
+        self.SF_value = nn.Linear(layer_input_dim, self.nn_params.state_dim)
+        self.weight_init(self.SF_value, self.nn_params.weight_initializer, self.nn_params.bias_initializer)
+
+        self.to(self.nn_params.device)
+
+    def forward(self, state, action):
+        if type(state) != torch.Tensor:
+            state = torch.Tensor(state).to(self.nn_params.device)
+        if type(action) != torch.Tensor:
+            action = torch.Tensor(action).to(self.nn_params.device)
+
+        inp = torch.cat((state, action), dim= 1)
+
+        for i, layer in enumerate(self.layers):
+            if self.non_lin != None:
+                inp = self.non_lin(layer(inp))
+            else:
+                inp = layer(inp)
+        SF_s_a = self.SF_value(inp)
+
+        return SF_s_a
+
+    def get_value(self, state, action, format="torch"):
+
+        if format == "torch":
+            return self.forward(state, action)
+        elif format == "numpy":
+            return  self.forward(state, action).cpu().detach().numpy()
+
+    def to(self, device):
+        super().to(device)
+        self.nn_params.device= device

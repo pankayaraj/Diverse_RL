@@ -20,9 +20,9 @@ env2 = GridWalk(grid_size, False)
 
 #Q = Q_learning(env, q_param, algo_param)
 
-num_z = 4
-Z = [0, 1, 2, 3,]
-loc = "gradual_models/3/"
+num_z = 10
+Z = [0, 1, 2, 3,4, 5, 6, 7, 8, 9]
+loc = "gradual_models/5/"
 
 All_traj = []
 from q_learning_1 import Q_learning
