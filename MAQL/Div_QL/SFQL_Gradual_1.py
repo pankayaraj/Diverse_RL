@@ -211,7 +211,7 @@ class SFQL_Gradual():
 
             min_dist = torch.stack(distances).min(dim=0)[0]
 
-        expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + self.algo_param.alpha*min_dist
+        expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + self.algo_param.alpha*min_dist*optim_mask
         loss = self.loss_function( state_action_values, expected_state_action_values)
 
         self.Q_optim[z].zero_grad()
