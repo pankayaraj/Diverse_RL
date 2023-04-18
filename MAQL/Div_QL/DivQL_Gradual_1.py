@@ -16,10 +16,10 @@ class DivQL_Gradual():
                  log_ratio_memory_capacity=5000, batch_size=400, save_path = Save_Paths(), load_path= Load_Paths(),
                  deterministic_env=True, average_next_nu = True):
 
-        #self.distance = "KL"
+        self.distance = "KL"
         #self.distance = "Jeffrey"
         #self.distance = "Pearson"
-        self.distance = "Exponential"
+        #self.distance = "Exponential"
 
         self.state_dim = q_nn_param.state_dim
         self.action_dim = q_nn_param.action_dim
@@ -317,6 +317,7 @@ class DivQL_Gradual():
             effective_log_ratio = log_ratio.squeeze()*optim_mask
             effective_ratio = ratio.squeeze()*optim_mask
 
+        self.dist = effective_log_ratio.unsqueeze(1)
         if self.distance == "KL":
             expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + self.algo_param.alpha*effective_log_ratio.unsqueeze(1)
         elif self.distance == "Jeffrey":

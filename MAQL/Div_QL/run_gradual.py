@@ -72,8 +72,10 @@ for z in Z:
         if i % update_interval == 0:
             M.hard_update(z)
         if i % save_interval == 0:
+            if i >10000:
+                print(M.dist)
             print("saving")
-            M.save(z,"gradual_models/6/q" + str(z), "gradual_models/6/target_q" + str(z), "gradual_models/6/nu" + str(z) + "_1", "gradual_models/6/nu" + str(z) + "_2")
+            #M.save(z,"gradual_models/6/q" + str(z), "gradual_models/6/target_q" + str(z), "gradual_models/6/nu" + str(z) + "_1", "gradual_models/6/nu" + str(z) + "_2")
 
         if i % eval_interval == 0:
 
@@ -91,4 +93,4 @@ for z in Z:
                     break
             print("for z = " + str(z) + " reward at itr " + str(i) + " = " + str(rew) + " at state: " + str(s) + " starting from: " + str(i_s))
         # Q.memory = torch.load("mem")
-        torch.save(M.log_ratio_memory, "gradual_models/3/mem" + str(z))
+        #torch.save(M.log_ratio_memory, "gradual_models/3/mem" + str(z))
