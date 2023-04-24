@@ -21,8 +21,8 @@ env2 = GridWalk(grid_size, False)
 #Q = Q_learning(env, q_param, algo_param)
 
 num_z = 10
-Z = [0, 1, 2, 3,4, 5, 6, 7, 8, 9]
-loc = "gradual_models/5/"
+Z = [0, 1, 2, 3,4, 5, 6,7, 8, 9]
+loc = "gradual_models/10x10/q/"
 
 All_traj = []
 from q_learning_1 import Q_learning
@@ -41,13 +41,14 @@ for z in Z:
     s = env2.reset()
     i_s = s
     rew = 0
-    S = []
+    S = [s]
     for j in range(max_episodes):
         a = Q.get_action(s)
 
-        S.append(s)
+
         n_s, r, d, _ = env2.step(a)
 
+        S.append(n_s)
         sample_hot_vec = np.array([0.0 for i in range(q_param.action_dim)])
         sample_hot_vec[a] = 1
         a = sample_hot_vec
@@ -58,7 +59,6 @@ for z in Z:
 
         if d == True:
             n_s = None
-
             break
         memory.push(s, a, r, n_s, i_s, j, True)
         s = n_s

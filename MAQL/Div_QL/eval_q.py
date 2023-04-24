@@ -7,7 +7,7 @@ from model import NN_Paramters
 from parameters import Algo_Param, Save_Paths, Load_Paths
 from memory import Replay_Memory
 
-q_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=torch.device("cpu"), l_r=0.05)
+q_param = NN_Paramters(state_dim=2, action_dim=4, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=torch.device("cpu"), l_r=0.05)
 algo_param = Algo_Param()
 algo_param.gamma = 0.9
 
@@ -22,7 +22,7 @@ env2 = GridWalk(grid_size, False)
 
 from q_learning_1 import Q_learning
 Q = Q_learning(env, q_param, algo_param,)
-Q.load("gradual_models/1/q1", "gradual_models/1/target_q1")
+Q.load("gradual_models/10x10/q/q0", "gradual_models/10x10/q/target_q0")
 
 update_interval = 10
 save_interval = 1000
@@ -39,6 +39,7 @@ for i in range(10000):
         a = Q.get_action(s)
 
         S.append(s)
+
         n_s, r, d, _ = env2.step(a)
 
         sample_hot_vec = np.array([0.0 for i in range(q_param.action_dim)])
@@ -46,15 +47,17 @@ for i in range(10000):
         a = sample_hot_vec
 
         rew += r
-
+        memory.push(s, a, r, n_s, i_s, j, True)
         if j == max_episodes-1:
             d = True
             #memory.push(s, a, r, n_s, i_s, j, True )
         if d == True:
+            s =  n_s
             n_s = None
-            #memory.push(s, a, r, n_s, i_s, j, True)
+            memory.push(s, a, r, n_s, i_s, j, True)
             break
-        memory.push(s, a, r, n_s, i_s, j, True)
+
+
         s = n_s
 
 
@@ -62,4 +65,4 @@ for i in range(10000):
         print("reward at itr " + str(i) + " = " + str(rew) + " at state: " + str(s) + " starting from: " + str(i_s))
         print(S)
 #Q.memory = torch.load("mem")
-torch.save(memory, "gradual_models/1/mem0")
+torch.save(memory, "gradual_models/10x10/q/mem0")

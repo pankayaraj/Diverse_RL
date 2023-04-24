@@ -13,7 +13,7 @@ from util.q_learning_to_policy import Q_learner_Policy
 class DivQL_Gradual():
 
     def __init__(self, env,  inital_log_buffer, q_nn_param, nu_param, algo_param, num_z, optim_alpha=0.8, max_episode_length =100, memory_capacity =10000,
-                 log_ratio_memory_capacity=5000, batch_size=400, save_path = Save_Paths(), load_path= Load_Paths(),
+                 log_ratio_memory_capacity=1000, batch_size=400, save_path = Save_Paths(), load_path= Load_Paths(),
                  deterministic_env=True, average_next_nu = True):
 
         self.distance = "KL"
@@ -204,7 +204,8 @@ class DivQL_Gradual():
                 self.train_log_ratio(z)
                 self.train_ratio(z)
 
-        if R_max < 0.8*R:
+
+        if 0.8*R_max < R:
             for i in range(len(tuples)):
                 tuples[i].append(True)
         else:
@@ -319,7 +320,14 @@ class DivQL_Gradual():
 
         self.dist = effective_log_ratio.unsqueeze(1)
         if self.distance == "KL":
-            expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + self.algo_param.alpha*effective_log_ratio.unsqueeze(1)
+            expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + self.algo_param.alpha*torch.abs(effective_log_ratio.unsqueeze(1))
+            if self.T > 10000:
+                if self.T%1000==0:
+                    print(torch.sum(reward.unsqueeze(1)))
+                    print(torch.sum(effective_log_ratio.unsqueeze(1)))
+                    print(torch.sum(log_ratio.unsqueeze(1)))
+                    print("---------------------------------------------")
+
         elif self.distance == "Jeffrey":
             expected_state_action_values = (self.algo_param.gamma * next_state_action_values).unsqueeze(1) + reward.unsqueeze(1) + \
                                            self.algo_param.alpha * (
@@ -363,6 +371,7 @@ class DivQL_Gradual():
             self.eval(1, R_max, self.current_index)
         
         """
+        self.add_new_replay_buffer(self.current_index)
         return state
 
     def sample_for_log_others(self, batch_size, current_z_index):

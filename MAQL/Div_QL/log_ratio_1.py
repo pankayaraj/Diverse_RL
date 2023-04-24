@@ -10,15 +10,17 @@ class Algo_Param():
 
 class Log_Ratio():
 
-    def __init__(self, nu_param, algo_param, num_z, save_path = "temp", load_path="temp",):
+    def __init__(self, nu_param, algo_param, num_z,state_action=True, save_path = "temp", load_path="temp",):
 
         self.nu_param = nu_param
         self.algo_param = algo_param
         self.num_z = num_z
 
         #log_ratio estimator
-        self.nu_network = Nu_NN_1(nu_param, save_path=save_path, load_path=load_path,  num_z=num_z)
+        self.nu_network = Nu_NN_1(nu_param, save_path=save_path, load_path=load_path,  num_z=num_z, state_action=state_action)
         self.nu_optimizer = torch.optim.Adam(self.nu_network.parameters(), lr=self.nu_param.l_r)
+        self.target_nu = Nu_NN_1(nu_param, save_path=save_path, load_path=load_path,  num_z=num_z, state_action=state_action)
+        self.target_nu.load_state_dict(self.nu_network.state_dict())
 
         self.nu_base_lr = self.nu_param.l_r
         self.current_lr = self.nu_base_lr
@@ -82,5 +84,6 @@ class Log_Ratio():
 
 
 
-        nu = self.nu_network(state, action)
+        #nu = self.nu_network(state, action)
+        nu = self.target_nu(state, action)
         return nu

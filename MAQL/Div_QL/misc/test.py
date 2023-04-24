@@ -1,23 +1,24 @@
-import torch
+import heapq
 
-# create two 2D tensors
-tensor1 = torch.tensor([[1, 2], [3, 4], [5, 6]])
-tensor2 = torch.tensor([[7, 8], [9, 10], [11, 12]])
+# define the priority queue list
+pq = []
 
-# compute the dot product of the row elements of each tensor
+# function to push an element to the priority queue
+def push_array_with_priority(array, priority):
+    heapq.heappush(pq, (priority, array))
 
-tensor = tensor2-tensor1
-tensor = tensor.float()
-norms = torch.norm(tensor, dim=1)
+# function to pop the element with the highest priority
+def pop_array_with_priority():
+    _, array = heapq.heappop(pq)
+    return array
 
-print(norms)
+# example usage
+push_array_with_priority([1, 2, 3], -2)
+push_array_with_priority([4, 5, 6], -1)
+push_array_with_priority([7, 8, 9], -22)
 
-import torch
-
-# create a list of 1D tensors
-tensors = [torch.tensor([1, 2, 3]), torch.tensor([4, 5, 6]), torch.tensor([0, -1, 2])]
-
-# create a tensor consisting of the minimum of each corresponding element
-min_tensor = torch.stack(tensors).min(dim=0)[0]
-
-print(min_tensor)
+print(heapq.heapreplace(pq, ( -12, [1, 2, 3])))
+print(pq)
+print(pop_array_with_priority()) # output: [4, 5, 6]
+print(pop_array_with_priority()) # output: [1, 2, 3]
+print(pop_array_with_priority()) 

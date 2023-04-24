@@ -2,7 +2,7 @@ import torch
 import numpy as np
 import math
 
-def epsilon_greedy(q_values, steps_done, epsilon, action_dim, eps_end= 0.05, eps_decay=0.99):
+def epsilon_greedy(q_values, steps_done, epsilon, action_dim, eps_end= 0.05, eps_decay=0.999999):
 
     rand = np.random.random()
 

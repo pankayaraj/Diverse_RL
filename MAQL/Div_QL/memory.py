@@ -57,6 +57,7 @@ class Replay_Memory():
         else:
             indices = np.random.choice(self.capacity, batch_size)
 
+
         state = np.take(np.array(self.state), indices, axis=0)
         action = np.take(np.array(self.action), indices, axis=0)
         reward = np.take(np.array(self.reward), indices, axis=0)
