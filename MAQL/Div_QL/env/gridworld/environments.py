@@ -105,16 +105,23 @@ class GridWalk(object):
     if action == 0:
       if self._x < self._length - 1:
         self._x += 1
+      else:
+        self._x -= 1
     elif action == 2:
       if self._y < self._length - 1:
         self._y += 1
-
+      else:
+        self._y -= 1
     elif action == 1:
       if self._x > 0:
         self._x -= 1
+      else:
+        self._x += 1
     elif action == 3:
       if self._y > 0:
         self._y -= 1
+      else:
+        self._y += 1
 
     #elif action == 4:
     #  pass

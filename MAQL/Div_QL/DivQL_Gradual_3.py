@@ -13,13 +13,13 @@ from util.q_learning_to_policy import Q_learner_Policy
 
 class DivQL_Gradual():
 
-    def __init__(self, env,  inital_log_buffer, q_nn_param, nu_param, algo_param, num_z, optim_alpha=0.8, max_episode_length =100, memory_capacity =2000,
+    def __init__(self, env,  inital_log_buffer, q_nn_param, nu_param, algo_param, num_z, optim_alpha=0.8, max_episode_length =100, memory_capacity =1000,
                  log_ratio_memory_capacity=1000, batch_size=400, save_path = Save_Paths(), load_path= Load_Paths(),
                  deterministic_env=True, average_next_nu = True):
 
-        #self.distance = "KL"
+        self.distance = "KL"
         #self.distance = "Jeffrey"
-        self.distance = "Pearson"
+        #self.distance = "Pearson"
         #self.distance = "Exponential"
         #self.distance = "A"
 
@@ -159,12 +159,12 @@ class DivQL_Gradual():
                 self.train(z, True)
 
         priority = 0
-        if 0.8*R_max < R:
-            if int(R) != int(R_max):
-                priority = 2
-                self.instances += 1
-            else:
-                priority = 0
+        if 0.8*R_max < R and R<R_max:
+
+            priority = 2
+            self.instances += 1
+            #else:
+            #    priority = 0
             for i in range(len(tuples)):
                 tuples[i].append(True)
         else:

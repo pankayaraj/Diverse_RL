@@ -83,6 +83,7 @@ for z in Z:
             #print(OM)
             #print(OM_P)
             S = []
+            A = []
             s = env2.reset()
             i_s = s
             rew = 0
@@ -91,6 +92,7 @@ for z in Z:
                 S.append(list(s))
                 a = M.get_action(s, z)
 
+                A.append(a)
 
 
 
@@ -112,5 +114,6 @@ for z in Z:
             print("for z = " + str(z) + " reward at itr " + str(i) + " = " + str(rew) + ", " + str(rew+algo_param.alpha*a_r) + " at state: " + str(s) + " starting from: " + str(i_s) + " eps " + str(M.epsilon))
             print("Instances = " + str(M.instances))
             print(S)
+            print(A)
         # Q.memory = torch.load("mem")
         #torch.save(M.log_ratio_memory, "gradual_models/3/mem" + str(z))
