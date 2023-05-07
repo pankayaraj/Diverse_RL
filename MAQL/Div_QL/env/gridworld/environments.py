@@ -134,10 +134,11 @@ class GridWalk(object):
     done = False
     #reward = np.exp(-2 * taxi_distance / self._length)
     if self._x == self._target_x and self._y == self._target_y:
-      reward = 100
+      reward = 20
       done = True
     else:
       reward = np.exp(-2 * taxi_distance / self._length)
+      #reward = 0
       reward -= 1
 
 

@@ -9,7 +9,7 @@ from epsilon_greedy import epsilon_greedy
 class Q_learning():
 
     def __init__(self, env, q_nn_param, algo_param, max_episodes =100, memory_capacity =10000,
-                 batch_size=400, num_z=2, save_path = Save_Paths(), load_path= Load_Paths()):
+                 batch_size=400, num_z=2, save_path = Save_Paths(), load_path= Load_Paths(), inital_log_buffer= None ):
 
         self.state_dim = q_nn_param.state_dim
         self.action_dim = q_nn_param.action_dim
@@ -44,6 +44,8 @@ class Q_learning():
 
 
 
+
+
     def save(self, q_path, target_q_path):
         self.Q.save(q_path)
         self.Target_Q.save(target_q_path)
@@ -68,6 +70,7 @@ class Q_learning():
         action, self.steps_done, self.epsilon = epsilon_greedy(q_values, self.steps_done, self.epsilon, self.action_dim)
 
         next_state, reward, done, _ = self.env.step(action)
+
 
         #converting the action for buffer as one hot vector
         sample_hot_vec = np.array([0.0 for i in range(self.q_nn_param.action_dim)])
@@ -138,6 +141,9 @@ class Q_learning():
             next_state_action_values = torch.zeros(batch_size, device=self.q_nn_param.device)
             next_state_action_values[non_final_mask] = self.Target_Q.get_value(non_final_next_states).max(1)[0]
             #now there will be a zero if it is the final state and q*(n_s,n_a) is its not None
+
+
+
 
 
         expected_state_action_values = (self.algo_param.gamma*next_state_action_values).unsqueeze(1) + reward.unsqueeze(1)

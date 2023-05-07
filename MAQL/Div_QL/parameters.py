@@ -20,7 +20,7 @@ class NN_Paramters():
 class Algo_Param():
     def __init__(self, gamma=0.995, hard_update_interval = 1000):
         self.gamma = gamma
-        self.alpha = 10
+        self.alpha = 1
         self.hard_update_interval = hard_update_interval
 
 

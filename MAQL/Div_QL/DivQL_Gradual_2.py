@@ -85,8 +85,6 @@ class DivQL_Gradual():
     def add_new_replay_buffer(self, current_z):
 
         log_ratio_memory = {}
-
-
         #since the indexing starts from 0 we need z+1 to count the new buffer
         for i in range(current_z+1):
             log_ratio_memory[i] = Replay_Memory(self.log_ratio_memory_capacity)

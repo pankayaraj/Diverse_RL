@@ -13,15 +13,15 @@ from util.q_learning_to_policy import Q_learner_Policy
 
 class DivQL_Gradual():
 
-    def __init__(self, env,  inital_log_buffer, q_nn_param, nu_param, algo_param, num_z, optim_alpha=0.8, max_episode_length =100, memory_capacity =1000,
+    def __init__(self, env,  inital_log_buffer, q_nn_param, nu_param, algo_param, num_z, optim_alpha=0.8, max_episode_length =100, memory_capacity =2000,
                  log_ratio_memory_capacity=1000, batch_size=400, save_path = Save_Paths(), load_path= Load_Paths(),
                  deterministic_env=True, average_next_nu = True):
 
-        self.distance = "KL"
+        #self.distance = "KL"
         #self.distance = "Jeffrey"
         #self.distance = "Pearson"
         #self.distance = "Exponential"
-        #self.distance = "A"
+        self.distance = "A"
 
         self.state_dim = q_nn_param.state_dim
         self.action_dim = q_nn_param.action_dim
@@ -118,6 +118,11 @@ class DivQL_Gradual():
             action, self.steps_done, self.epsilon = epsilon_greedy(q_values, self.steps_done, self.epsilon, self.action_dim)
 
             next_state, reward, done, _ = self.env.step(action)
+
+            p1 = 1 / 100
+            p2 = self.prev_O_M[next_state[1]][next_state[0]]
+
+            reward += (p1) / (p2 + 0.01)
 
             R += reward
             #converting the action for buffer as one hot vector
@@ -278,15 +283,21 @@ class DivQL_Gradual():
 
 
 
+
+
         with torch.no_grad():
             ratio = []
             delta = 0.01
             for i in range(batch_size):
-                #p1 = O_M[state[i][1]][state[i][0]]
-                p1 = 1/100
-                p2 = self.prev_O_M[state[i][1]][state[i][0]]
 
-                ratio.append((p1)/(p2+delta*0.1))
+                if next_state[i] is not None:
+                #p1 = O_M[state[i][1]][state[i][0]]
+                    p1 = 1/100
+                    p2 = self.prev_O_M[next_state[i][1]][next_state[i][0]]
+
+                    ratio.append((p1)/(p2+0.01))
+                else:
+                    ratio.append(0)
 
 
             ratio =  torch.Tensor(ratio)
@@ -322,8 +333,11 @@ class DivQL_Gradual():
                                            self.algo_param.alpha * (
                                                    effective_log_ratio.unsqueeze(1) ** 2)
         if self.distance == "A":
+            #expected_state_action_values = (self.algo_param.gamma * next_state_action_values).unsqueeze(
+            #    1) + reward.unsqueeze(1) + self.algo_param.alpha * torch.abs(effective_ratio.unsqueeze(1))
+
             expected_state_action_values = (self.algo_param.gamma * next_state_action_values).unsqueeze(
-                1) + reward.unsqueeze(1) + self.algo_param.alpha * torch.abs(effective_ratio.unsqueeze(1))
+                1) + reward.unsqueeze(1) #+ self.algo_param.alpha * torch.abs(ratio.unsqueeze(1))
 
             if self.T > 10000:
                 if self.T%1000==0:

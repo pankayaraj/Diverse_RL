@@ -21,12 +21,13 @@ num_z = 2
 
 
 Z = [0,]
-
+Z = [1, 2, 3, 4, 5, 6, 7, 8, 9,  10, 11, 12, 13, 14]
+inital_log_buffer = torch.load("gradual_models/10x10/q/mem0")
 for z in Z:
     env = GridWalk(grid_size, False)
     env2 = GridWalk(grid_size, False)
     from q_learning_1 import Q_learning
-    Q = Q_learning(env, q_param, algo_param,)
+    Q = Q_learning(env, q_param, algo_param, inital_log_buffer=inital_log_buffer)
     #Q.load("q", "target_q")
     update_interval = 100
     save_interval = 1000
@@ -36,22 +37,27 @@ for z in Z:
 
     print(z)
 
-    for i in range(10000):
+    for i in range(5000):
 
         Q.train()
         state = Q.step(state)
         if i%update_interval == 0:
             Q.hard_update()
         if i%save_interval == 0:
+
             print("saving")
-            Q.save("gradual_models/10x10/q" + str(z), "gradual_models/10x10/target_q" + str(z))
+            Q.save("gradual_models/10x10/Q/q" + str(z), "gradual_models/10x10/Q/target_q" + str(z))
         if i%eval_interval == 0:
             s = env2.reset()
             i_s = s
             rew = 0
+
+            S = []
             for j in range(max_episodes):
                 a = Q.get_action(s)
                 s, r, d, _ = env2.step(a)
+                S.append(s)
+
 
                 rew += r
                 if j == max_episodes-1:
@@ -59,6 +65,7 @@ for z in Z:
                 if d == True:
 
                     break
+            print(S)
             print("reward at itr " + str(i) + " = " + str(rew) + " at state: " + str(s) + " starting from: " + str(i_s) + " espislon = "+ str(Q.epsilon))
     #Q.memory = torch.load("mem")
     #torch.save(Q.memory, "mem")
