@@ -341,11 +341,14 @@ class Nu_NN_1(BaseNN):
         self.non_lin = self.nn_params.non_linearity
         self.state_action = state_action
         # Hidden layers
+
         if state_action:
             layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim
         else:
             layer_input_dim = self.nn_params.state_dim
         hidden_layer_dim = self.nn_params.hidden_layer_dim
+
+
         for i, dim in enumerate(hidden_layer_dim):
             l = nn.Linear(layer_input_dim, dim)
             self.weight_init(l, self.nn_params.weight_initializer, self.nn_params.bias_initializer)
