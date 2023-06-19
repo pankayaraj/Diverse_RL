@@ -11,19 +11,19 @@ from ratio_1 import Ratio
 from memory import Replay_Memory, combine_transition_tuples
 from epsilon_greedy import epsilon_greedy
 from util.q_learning_to_policy import Q_learner_Policy
-class DivQL():
 
+
+class DivQL():
     def __init__(self, env, inital_log_buffer, q_nn_param, nu_pram, algo_param,  max_episodes =100, memory_capacity =10000,
                  log_ratio_memory_capacity=1000,
                  batch_size=400, num_z=2, save_path = Save_Paths(), load_path= Load_Paths(), ):
 
         self.num_z = num_z
-
-        self.state_dim = q_nn_param.state_dim
-        self.action_dim = q_nn_param.action_dim
-        self.q_nn_param = q_nn_param
-        self.algo_param = algo_param
-        self.nu_param = nu_pram
+        self.state_dim    = q_nn_param.state_dim
+        self.action_dim   = q_nn_param.action_dim
+        self.q_nn_param   = q_nn_param
+        self.algo_param   = algo_param
+        self.nu_param     = nu_pram
         self.max_episodes = max_episodes
 
         self.save_path = Save_Paths()
@@ -50,9 +50,9 @@ class DivQL():
         self.ratio = {}
         for i in range(self.num_z):
             self.log_ratio[i] = Log_Ratio(self.nu_param, self.algo_param,  num_z=self.num_z,
-                                 save_path=save_path.nu_path, load_path=load_path.nu_path, state_action=False)
+                                 save_path=save_path.nu_path, load_path=load_path.nu_path, state_action=True)
             self.ratio[i]  = Ratio(self.nu_param, self.algo_param,  num_z=self.num_z,
-                                 save_path=save_path.nu_path, load_path=load_path.nu_path, state_action=False)
+                                 save_path=save_path.nu_path, load_path=load_path.nu_path, state_action=True)
 
 
 
@@ -166,14 +166,7 @@ class DivQL():
             data2 = None
         else:
             data2 = self.uniform_sampler(self.ratio_batch_size )
-
-            data_temp = self.uniform_sampler(int(self.ratio_batch_size*0.0))
             data1 = self.sample_for_log_others(self.ratio_batch_size , current_z_index=z)
-
-
-            for i in range(int(self.ratio_batch_size*0.0)):
-                data1.state[i] = data_temp.state[i]
-                data1.action[i] = data_temp.action[i]
 
 
 
@@ -194,9 +187,9 @@ class DivQL():
             data_temp = self.uniform_sampler(int(self.ratio_batch_size * 0.0))
             data1 = self.sample_for_log_others(self.ratio_batch_size, current_z_index=z)
 
-            for i in range(int(self.ratio_batch_size * 0.0)):
-                data1.state[i] = data_temp.state[i]
-                data1.action[i] = data_temp.action[i]
+            #for i in range(int(self.ratio_batch_size * 0.4)):
+            #    data1.state[i] = data_temp.state[i]
+            #    data1.action[i] = data_temp.action[i]
 
         z_hot_vec = np.array([0.0 for i in range(self.num_z)])
         z_hot_vec[z] = 1
@@ -220,9 +213,47 @@ class DivQL():
 
         D = Data()
         D.state = next_state
-        D.action = action
 
-        reward += 5*self.ratio[z].get_state_action_density_ratio(D, None).item()
+        sample_hot_vec = np.array([0.0 for i in range(self.q_nn_param.action_dim)])
+        sample_hot_vec[action] = 1
+        D.action = sample_hot_vec
+
+        #reward += 0.0*self.log_ratio[z].get_log_state_action_density_ratio(D, None).item()
+
+        """"""
+        #When we want reward to be an average of all actions
+        a1 = np.array([0, 0, 0, 1])
+        a2 = np.array([0, 0, 1, 0])
+        a3 = np.array([0, 1, 0, 0])
+        a4 = np.array([1, 0, 0, 0])
+
+
+        x = 0
+        s= next_state
+
+        D = Data()
+        D.state = s
+        D.action = a1
+           
+        x += self.log_ratio[z].get_log_state_action_density_ratio(D, None).item()
+        D.action = a2
+        x += self.log_ratio[z].get_log_state_action_density_ratio(D, None).item()
+        D.action = a3
+        x += self.log_ratio[z].get_log_state_action_density_ratio(D, None).item()
+        D.action = a4
+        x += self.log_ratio[z].get_log_state_action_density_ratio(D, None).item()
+            
+            
+        reward += 0.05*x/4
+            
+        
+        
+
+
+
+
+
+
         #reward += 1 * math.log(0.01 / (self.prev_O_M[next_state[1]][next_state[0]] + 0.01))
 
         #converting the action for buffer as one hot vector
@@ -248,6 +279,8 @@ class DivQL():
             return state
 
         self.memory.push(state, action, reward, next_state, self.inital_state, self.time_step, True)
+
+
         return next_state
 
 
@@ -261,10 +294,8 @@ class DivQL():
 
         z = self.current_index
         for _ in range(no):
-            if _ %500 == 0:
+            if _ %1000 == 0:
                 print(_)
-                print(self.ratio[z].debug_V["x**2"])
-                print(self.ratio[z].debug_V["linear"] )
 
                 print(self.log_ratio[z].debug_V["log_exp"])
                 print(self.log_ratio[z].debug_V["linear"])
@@ -344,19 +375,45 @@ class DivQL():
 
         #if self.current_index == 2:
         #    print(samples[0].next_state, samples[1].next_state)
+
         data = combine_transition_tuples(samples)
         return data
 
-    def uniform_sampler(self, batch_size):
-
+    def uniform_sampler(self,batch_size):
         action_s = np.random.randint(4, size=batch_size)
         state = np.random.randint(10, size=(batch_size, self.state_dim))
-
 
         action = [[0.0 for i in range(self.action_dim)] for j in range(batch_size)]
         for i in range(len(action_s)):
             action[i][action_s[i]] = 1
         action = np.array(action)
+
+        D = Data()
+        D.state = state
+        D.action = action
+
+        return D
+
+    """
+    def uniform_sampler(self, batch_size):
+
+        #action_s = np.random.randint(4, size=batch_size)
+        #state = np.random.randint(10, size=(batch_size, self.state_dim))
+
+        action_s = []
+        state = []
+
+        for i in range(batch_size):
+            action_s.append(np.random.randint(4))
+            state.append(np.random.randint(10, size=self.state_dim))
+
+        action = []
+
+        for i in range(len(action_s)):
+            a = [0.0 for i in range(self.action_dim)]
+            a[action_s[i]] = 1
+            action.append(np.array(a))
+        #action = np.array(action)
 
 
         D = Data()
@@ -364,7 +421,7 @@ class DivQL():
         D.action = action
 
         return  D
-
+    """
 class Data():
     def __init__(self):
         self.state = None

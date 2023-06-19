@@ -33,7 +33,7 @@ for i in range(10000):
         Q.hard_update()
     if i%save_interval == 0:
         print("saving")
-        Q.save("q", "target_q")
+        Q.save("q1", "target_q1")
     if i%eval_interval == 0:
         s = env2.reset()
         i_s = s

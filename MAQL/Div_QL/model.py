@@ -316,7 +316,12 @@ class Nu_NN(BaseNN):
         if self.state_action:
             if type(action) != torch.Tensor:
                 action = torch.Tensor(action).to(self.nn_params.device)
-            inp = torch.cat((state, action), dim=1)
+
+            if len(action.shape.item()) == 1:
+                print(state, action)
+                inp = torch.cat((state, action), dim=0)
+            else:
+                inp = torch.cat((state, action), dim=1)
         else:
             inp = state
         
@@ -373,7 +378,11 @@ class Nu_NN_1(BaseNN):
         if self.state_action:
             if type(action) != torch.Tensor:
                 action = torch.Tensor(action).to(self.nn_params.device)
-            inp = torch.cat((state, action), dim=1)
+
+            if action.dim() == 1:
+                inp = torch.cat((state, action), dim=0)
+            else:
+                inp = torch.cat((state, action), dim=1)
         else:
             inp = state
 

@@ -38,28 +38,21 @@ class Log_Ratio():
     def train_ratio(self, data1, data2, z_arr):
 
 
-
             state1 = data1.state
             action1 = data1.action
 
             state2 = data2.state
             action2 = data2.action
 
-            #print(state1)
-            #print("----------------------------")
-            #print(state2)
-            #print("----------------------------")
-
-
             weight1 = torch.Tensor(self.algo_param.gamma ** data1.time_step).to(self.nu_param.device)
-            #weight2 = torch.Tensor(self.algo_param.gamma ** data2.time_step).to(self.nu_param.device)
+            weight2 = torch.Tensor(self.algo_param.gamma ** data1.time_step).to(self.nu_param.device)
 
             # reshaping the weight tensor to facilitate the elmentwise multiplication operation
             no_data1 = weight1.size()[0]
-            no_data2 = weight1.size()[0]
+            no_data2 = weight2.size()[0]
 
-            #weight1 = torch.reshape(weight1, [no_data1, 1])
-            weight2 = torch.reshape(weight1, [no_data2, 1])
+            weight1 = torch.reshape(weight1, [no_data1, 1])
+            weight2 = torch.reshape(weight2, [no_data2, 1])
 
             nu1 = self.nu_network(state1, action1)
             nu2 = self.nu_network(state2, action2)
@@ -67,18 +60,14 @@ class Log_Ratio():
             unweighted_nu_loss_1 = self.f(nu1)
             unweighted_nu_loss_2 = nu2
 
-            #loss_1 = torch.log(torch.sum(weight1 * unweighted_nu_loss_1) / torch.sum(weight1))
-            #loss_1 = torch.log(torch.sum(unweighted_nu_loss_1))
-            #loss_2 = torch.sum(weight1 * unweighted_nu_loss_2) / torch.sum(weight1)
+            loss_1 = torch.log(torch.sum(weight1 * unweighted_nu_loss_1) / torch.sum(weight1))
+            loss_2 = torch.sum(weight2 * unweighted_nu_loss_2) / torch.sum(weight2)
 
-            loss_1 = torch.log(torch.sum(unweighted_nu_loss_1))
-            loss_2 = torch.sum(unweighted_nu_loss_2)
-
-            #self.debug_V["exp"] = loss_1
+            self.debug_V["exp"] = torch.sum(weight1 * unweighted_nu_loss_1) / torch.sum(weight1)
             self.debug_V["log_exp"] = loss_1
             self.debug_V["linear"] = loss_2
 
-            loss = torch.abs(loss_1 - loss_2)
+            loss = loss_1 - loss_2
 
             self.nu_optimizer.zero_grad()
             loss.backward()
@@ -93,8 +82,7 @@ class Log_Ratio():
         state = data.state
         action = data.action
 
-
-
         #nu = self.nu_network(state, action)
-        nu = self.target_nu(state, action)
+
+        nu = self.nu_network(state, action)
         return nu

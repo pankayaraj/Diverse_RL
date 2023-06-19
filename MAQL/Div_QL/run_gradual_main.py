@@ -57,15 +57,20 @@ for z in Z:
 
     data = [[0 for i in range(10)] for j in range(10)]
 
-    for i in range(10):
-        for j in range(10):
-            p1 = 1 / 100
-            p2 = M.prev_O_M[i][j]
-            data[i][j] =  (p1 ) / (p2 + 0.01)
-    print(np.array(data))
+
 
     state = M.initalize()
     print(M.current_index )
+
+    x = np.arange(data.shape[1])
+    y = np.arange(data.shape[0])
+    X, Y = np.meshgrid(x, y)
+    ig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_surface(X, Y, data, cmap='RdYlBu_r')
+    plt.show()
+
+
 
     print("Z " + str(z))
     for i in range(10000):
@@ -82,7 +87,7 @@ for z in Z:
             print(M.current_index, z)
             print("saving")
             #M.save(z-1,"gradual_models/10x10/3/q" + str(z), "gradual_models/10x10/3/target_q" + str(z), "gradual_models/10x10/3/nu" + str(z) + "_1", "gradual_models/10x10/3/nu" + str(z) + "_2")
-            M.save_main("gradual_models/10x10/tabular_DivQL/q", "gradual_models/10x10/tabular_DivQL/target_q")
+            #M.save_main("gradual_models/10x10/tabular_DivQL/q", "gradual_models/10x10/tabular_DivQL/target_q")
         if i % eval_interval == 0:
 
             OM_P = M.prev_O_M

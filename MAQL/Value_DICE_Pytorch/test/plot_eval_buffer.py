@@ -15,7 +15,7 @@ nu_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[6, 6], non_
                         device=torch.device("cpu"), l_r=0.0001)
 
 
-nu_path = ["nu_1", "nu_2", "nu_3"]
+nu_path = ["nu_1", "nu_2", "nu_4"]
 
 algo_param.gamma = 0.995
 
@@ -100,5 +100,5 @@ for i in range(len(labels)):
 for i in x:
     plt.axvline(x=i+0.5)
 
-
-plt.savefig("Distances")
+plt.show()
+#plt.savefig("Distances")

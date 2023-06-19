@@ -23,7 +23,7 @@ from math import log
 
 device = torch.device("cpu")
 policy_param = NN_Paramters(state_dim=2, action_dim=4, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device= device)
-nu_param = NN_Paramters(state_dim=2, action_dim=4, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=device, l_r=0.001)
+nu_param = NN_Paramters(state_dim=2, action_dim=4, hidden_layer_dim=[6,6], non_linearity=torch.tanh, device=device, l_r=0.0001)
 q_param = NN_Paramters(state_dim=2, action_dim=4, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=device, l_r=0.05)
 algo_param = Algo_Param(hard_update_interval=1)
 algo_param.gamma = 0.9
@@ -53,7 +53,6 @@ import matplotlib.pyplot as plt
 
 
 
-
 M  = DivQL(env, inital_log_buffer=inital_log_buffer, q_nn_param=q_param, nu_pram=nu_param,
            algo_param=algo_param, num_z=num_z)
 
@@ -62,7 +61,7 @@ data = [[0 for i in range(10)] for j in range(10)]
 
 print(np.array(data))
 for z in Z:
-    M.train_ratios(5000)
+    M.train_ratios(30000)
 
     data = [[0 for i in range(10)] for j in range(10)]
     data_l = [[0 for i in range(10)] for j in range(10)]
@@ -71,32 +70,61 @@ for z in Z:
         for j in range(10):
 
             s = np.array([j, i])
-            a = np.array([0, 0, 0, 1])
+            x = 0
+
+
+
+
+            a1 = np.array([0, 0, 0, 1])
+            a2 = np.array([0, 0, 1, 0])
+            a3 = np.array([0, 1, 0, 0])
+            a4 = np.array([1, 0, 0, 0])
+
+
+            action = torch.Tensor(a1)
+            state = torch.Tensor(s)
+
+
             D = Data()
             D.state = s
-            D.action = a
-            print(i, j, M.ratio[z].get_state_action_density_ratio(D, None).item())
-            data[i][j] = M.ratio[z].get_state_action_density_ratio(D, None).item()
-            data_l[i][j] = M.log_ratio[z].get_log_state_action_density_ratio(D, None).item()
+            D.action = a1
+
+            x += M.log_ratio[z-1].get_log_state_action_density_ratio(D, None).item()
+            D.action = a2
+            x += M.log_ratio[z-1].get_log_state_action_density_ratio(D, None).item()
+            D.action = a3
+            x += M.log_ratio[z-1].get_log_state_action_density_ratio(D, None).item()
+            D.action = a4
+            x += M.log_ratio[z-1].get_log_state_action_density_ratio(D, None).item()
+
+
+            #data[i][j] = M.ratio[z].get_state_action_density_ratio(D, None).item()
+            data_l[i][j] = x/4
 
     data = np.array(data)
     data_l = np.array(data_l)
 
-    print(data)
-    fig = plt.figure()
-    ax = fig.add_subplot(111, projection='3d')
+    print(data_l)
     x = np.arange(data.shape[1])
     y = np.arange(data.shape[0])
     X, Y = np.meshgrid(x, y)
+
+    """
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
     surf = ax.plot_surface(X, Y, data, cmap='RdYlBu_r')
     plt.show()
+    """
     fig = plt.figure()
     ax = fig.add_subplot(111, projection='3d')
     surf = ax.plot_surface(X, Y, data_l, cmap='RdYlBu_r')
-    plt.show()
+    plt.savefig("reward_landscape/z_" + str(z))
+    #plt.show()
 
     state = M.initalize()
     print(M.current_index )
+
+    print(data_l)
 
     print("Z " + str(z))
     for i in range(10000):
@@ -133,6 +161,10 @@ for z in Z:
                 D = Data()
                 D.state = s
                 D.action = a
+
+                sample_hot_vec = np.array([0.0 for i in range(M.q_nn_param.action_dim)])
+                sample_hot_vec[a] = 1
+                D.action = sample_hot_vec
 
                 ra = M.ratio[z].get_state_action_density_ratio(D, None).item()
                 l_p = M.log_ratio[z].get_log_state_action_density_ratio(D, None).item()

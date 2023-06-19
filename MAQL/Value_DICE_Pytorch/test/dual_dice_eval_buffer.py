@@ -34,7 +34,7 @@ class Dice_Eval_Buffer():
         action2 = data2.action
 
         weight1 = torch.Tensor(self.algo_param.gamma ** data1.time_step).to(self.nu_param.device)
-        weight2 = torch.Tensor(self.algo_param.gamma ** data2.time_step).to(self.nu_param.device)
+        weight2 = torch.Tensor(self.algo_param.gamma ** data1.time_step).to(self.nu_param.device)
 
         # reshaping the weight tensor to facilitate the elmentwise multiplication operation
         no_data1 = weight1.size()[0]

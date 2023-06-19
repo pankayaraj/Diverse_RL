@@ -6,6 +6,8 @@ import numpy as np
 class Algo_Param():
     def __init__(self, gamma=0.9):
         self.gamma = gamma
+        self.state_dim = 2
+        self.action_dim = 5
 
 
 class Value_Dice():
@@ -64,6 +66,8 @@ class Value_Dice():
         self.debug_V["linear"] = loss_2
         #loss_1 = torch.log(torch.sum(unweighted_nu_loss_1))
         #loss_2 = torch.sum(unweighted_nu_loss_2)
+
+        
 
         loss = loss_1 - (1-self.algo_param.gamma)*loss_2
 

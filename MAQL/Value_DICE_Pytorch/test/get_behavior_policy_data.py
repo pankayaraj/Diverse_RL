@@ -29,7 +29,7 @@ env = GridWalk(grid_size, False)
 #behaviour_policy = Optim_Policy_Gridwalk(env, action_dim=5, eps_explore=0.2)
 behaviour_Q  = Q_learning(env, q_param, algo_param)
 behaviour_policy = Q_learner_Policy(behaviour_Q.Q, q_param)
-behaviour_policy.Q.load("Q_models/qy0")
+behaviour_policy.Q.load("Q_models/q1")
 max_episodes = 100
 
 rew = 0
@@ -99,4 +99,4 @@ for i in range(1000):
 
         t += 1
 
-torch.save(M, "Q_models/behaviour_buffer_3")
+torch.save(M, "Q_models/behaviour_buffer_4")

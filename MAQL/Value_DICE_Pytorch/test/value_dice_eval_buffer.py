@@ -17,7 +17,7 @@ class Value_Dice_Eval_Buffer():
         self.algo_param = algo_param
 
 
-        self.nu_network = Nu_NN(nu_param, save_path=save_path, load_path=load_path)
+        self.nu_network = Nu_NN(nu_param, save_path=save_path, load_path=load_path, num_z=2)
         self.nu_optimizer = torch.optim.Adam(self.nu_network.parameters(), lr=self.nu_param.l_r)
 
 
@@ -36,7 +36,7 @@ class Value_Dice_Eval_Buffer():
 
 
         weight1 = torch.Tensor(self.algo_param.gamma**data1.time_step).to(self.nu_param.device)
-        weight2 = torch.Tensor(self.algo_param.gamma ** data2.time_step).to(self.nu_param.device)
+        weight2 = torch.Tensor(self.algo_param.gamma ** data1.time_step).to(self.nu_param.device)
 
         #reshaping the weight tensor to facilitate the elmentwise multiplication operation
         no_data1 = weight1.size()[0]

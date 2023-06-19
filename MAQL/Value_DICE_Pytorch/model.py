@@ -273,7 +273,7 @@ class Value_Function_NN(BaseNN):
 
 class Nu_NN(BaseNN):
 
-    def __init__(self, nn_params, save_path, load_path, num_z, state_action=True):
+    def __init__(self, nn_params, save_path, load_path, num_z=2, state_action=True):
         super(Nu_NN, self).__init__(save_path=save_path, load_path=load_path)
         self.layers = nn.ModuleList([])
         self.nn_params = nn_params
@@ -281,9 +281,9 @@ class Nu_NN(BaseNN):
         self.state_action = state_action
         # Hidden layers
         if state_action:
-            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim + + num_z
+            layer_input_dim = self.nn_params.state_dim + self.nn_params.action_dim
         else:
-            layer_input_dim = self.nn_params.state_dim + + num_z
+            layer_input_dim = self.nn_params.state_dim
         hidden_layer_dim = self.nn_params.hidden_layer_dim
         for i, dim in enumerate(hidden_layer_dim):
             l = nn.Linear(layer_input_dim, dim)
@@ -297,25 +297,21 @@ class Nu_NN(BaseNN):
 
         self.to(self.nn_params.device)
 
-    def forward(self, state, z, action):
+    def forward(self, state, action):
 
         if type(state) != torch.Tensor:
             state = torch.Tensor(state).to(self.nn_params.device)
-        if type(z) != torch.Tensor:
-            z = torch.Tensor(z).to(self.nn_params.device)
+
         if type(action) != torch.Tensor:
             action = torch.Tensor(action).to(self.nn_params.device)
 
-        
-        if z.dim() == 1:
-            state = torch.cat((state, z), dim=0)
-        else:
-            state = torch.cat((state, z), dim=1)
+
 
 
         if self.state_action:
             if type(action) != torch.Tensor:
                 action = torch.Tensor(action).to(self.nn_params.device)
+
             inp = torch.cat((state, action), dim=1)
         else:
             inp = state
@@ -457,7 +453,7 @@ class Discrete_Q_Function_NN(BaseNN):
         self.non_lin = self.nn_params.non_linearity
 
         # Hidden layers
-        layer_input_dim = self.nn_params.state_dim + 1 #to add the latent variable and state as an input
+        layer_input_dim = self.nn_params.state_dim #to add the latent variable and state as an input
         hidden_layer_dim = self.nn_params.hidden_layer_dim
         for i, dim in enumerate(hidden_layer_dim):
             l = nn.Linear(layer_input_dim, dim)
@@ -479,6 +475,7 @@ class Discrete_Q_Function_NN(BaseNN):
         inp =state
 
         for i, layer in enumerate(self.layers):
+
             if self.non_lin != None:
                 inp = self.non_lin(layer(inp))
             else:
