@@ -83,4 +83,4 @@ for z in range(z_no):
 
     ax.set_title("DivQL, Ratio, Tabular", fontsize = 30)
     # Show the plot
-    plt.savefig("gradual_models/10x10/DivQL_ratio_z")
+    plt.savefig("gradual_models/10x10/ratio_fig/DivQL_ratio_" + str(z) )

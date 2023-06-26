@@ -5,22 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b02f43d0-efdc-4fac-8bbf-75cff0430a5f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/../Div_QL/plot_DivQL.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/DivQL_main_w_Nu.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/DivQL_main_w_Nu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/gradual_models/10x10/DivQL/q" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/gradual_models/10x10/DivQL/q" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/gradual_models/10x10/DivQL/target_q" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/gradual_models/10x10/DivQL/target_q" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_1.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_10.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_10.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_11.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_11.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_2.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_3.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_4.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_4.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_5.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_5.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_6.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_6.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_7.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_7.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_8.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_8.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_9.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_9.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/run_gradual_main_w_nu.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/run_gradual_main_w_nu.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Div_QL/plot_DivQL.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/plot_DivQL.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
