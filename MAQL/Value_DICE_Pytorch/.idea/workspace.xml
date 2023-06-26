@@ -5,30 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="b02f43d0-efdc-4fac-8bbf-75cff0430a5f" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/test/Q_models/q1" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/nu_eval_buff/dice/nu_4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/nu_eval_buff/value_dice/nu_4" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/test/plot_nu_in_grid.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Div_QL/plot_DivQL.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Div_QL/DivQL_main_w_Nu.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/DivQL_main_w_Nu.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Div_QL/gradual_models/10x10/DivQL/q" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/gradual_models/10x10/DivQL/q" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Div_QL/gradual_models/10x10/DivQL/target_q" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/gradual_models/10x10/DivQL/target_q" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/log_ratio_1.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/log_ratio_1.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/memory.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/memory.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Div_QL/run_gradual_main.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/run_gradual_main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_1.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_1.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_10.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_10.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_11.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_11.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_2.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_2.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_3.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_3.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_4.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_4.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_5.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_5.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_6.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_6.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_7.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_7.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_8.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_8.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_9.png" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/reward_landscape/z_9.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Div_QL/run_gradual_main_w_nu.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Div_QL/run_gradual_main_w_nu.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Distances.png" beforeDir="false" afterPath="$PROJECT_DIR$/Distances.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/env/gridworld/environments.py" beforeDir="false" afterPath="$PROJECT_DIR$/env/gridworld/environments.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/learn_q_function.py" beforeDir="false" afterPath="$PROJECT_DIR$/learn_q_function.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/model.py" beforeDir="false" afterPath="$PROJECT_DIR$/model.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/dual_dice_eval_buffer.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/dual_dice_eval_buffer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/get_behavior_policy_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/get_behavior_policy_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/main_dice_eval_buffer.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/main_dice_eval_buffer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/main_value_dice_eval_buffer.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/main_value_dice_eval_buffer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/plot_eval_buffer.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/plot_eval_buffer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/value_dice_eval_buffer.py" beforeDir="false" afterPath="$PROJECT_DIR$/test/value_dice_eval_buffer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/value_dice.py" beforeDir="false" afterPath="$PROJECT_DIR$/value_dice.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />

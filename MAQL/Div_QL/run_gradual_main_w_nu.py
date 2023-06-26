@@ -61,7 +61,7 @@ data = [[0 for i in range(10)] for j in range(10)]
 
 print(np.array(data))
 for z in Z:
-    M.train_ratios(30000)
+    M.train_ratios(40000)
 
     data = [[0 for i in range(10)] for j in range(10)]
     data_l = [[0 for i in range(10)] for j in range(10)]
@@ -127,7 +127,7 @@ for z in Z:
     print(data_l)
 
     print("Z " + str(z))
-    for i in range(10000):
+    for i in range(8000):
 
         M.train()
         state = M.step(state)
@@ -141,7 +141,7 @@ for z in Z:
             print(M.current_index, z)
             print("saving")
             #M.save(z-1,"gradual_models/10x10/3/q" + str(z), "gradual_models/10x10/3/target_q" + str(z), "gradual_models/10x10/3/nu" + str(z) + "_1", "gradual_models/10x10/3/nu" + str(z) + "_2")
-            M.save_main("gradual_models/10x10/DivQL/q", "gradual_models/10x10/DivQL/target_q")
+            M.save_main("gradual_models/10x10/DivQL/q1", "gradual_models/10x10/DivQL/target_q1")
         if i % eval_interval == 0:
 
 
