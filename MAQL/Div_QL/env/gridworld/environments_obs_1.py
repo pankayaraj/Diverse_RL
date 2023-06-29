@@ -51,6 +51,38 @@ class GridWalk(object):
     self.current_state = np.array([self._x, self._y])
     self.traget_state = np.array([self._target_x, self._target_y])
 
+
+    layout = """\
+wwwwwwwwwwwww
+w f   w   f w
+w     w f   w
+w  f     f  w
+w f   w     w
+w     w  f  w
+ww wwww f   w
+w f   www www
+w     w fff w
+wf    wfffffw
+w      ff   w
+w f   w  f  w
+wwwww
+"""
+
+    obstacle1 = [[3,3], [3,4], [3,5],
+                     [4,3], [4,4], [4,5],
+                     [5,3], [5,4], [5,5]
+                     ]
+    
+    obstacle2 = [ [3,4],
+                  [4,4],
+                  [5,4],
+                    ]
+    self.obstacle = obstacle1
+
+
+    self.frozen = np.array([list(map(lambda c: 1 if c == 'f' else 0, line)) for line in layout.splitlines()])
+
+
   def reset(self):
     """Resets the agent to a random square."""
     #self._x = np.random.randint(self._length)
@@ -101,27 +133,30 @@ class GridWalk(object):
       ValueError: If the input action is invalid.
     """
 
-
-    if action == 0:
-      if self._x < self._length - 1:
-        self._x += 1
-      else:
-        self._x -= 1
-    elif action == 2:
-      if self._y < self._length - 1:
-        self._y += 1
-      else:
-        self._y -= 1
-    elif action == 1:
-      if self._x > 0:
-        self._x -= 1
-      else:
-        self._x += 1
-    elif action == 3:
-      if self._y > 0:
-        self._y -= 1
-      else:
-        self._y += 1
+    state = [self._x, self._y]
+    if state in self.obstacle:
+      pass
+    else:
+      if action == 0:
+        if self._x < self._length - 1:
+          self._x += 1
+        else:
+          self._x -= 1
+      elif action == 2:
+        if self._y < self._length - 1:
+          self._y += 1
+        else:
+          self._y -= 1
+      elif action == 1:
+        if self._x > 0:
+          self._x -= 1
+        else:
+          self._x += 1
+      elif action == 3:
+        if self._y > 0:
+          self._y -= 1
+        else:
+          self._y += 1
 
     #elif action == 4:
     #  pass
