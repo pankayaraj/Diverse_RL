@@ -7,7 +7,7 @@ from model import NN_Paramters
 from parameters import Algo_Param, Save_Paths, Load_Paths
 
 
-q_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=torch.device("cpu"), l_r=0.05)
+q_param = NN_Paramters(state_dim=2, action_dim=4, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=torch.device("cpu"), l_r=0.05)
 algo_param = Algo_Param()
 algo_param.gamma = 0.9
 

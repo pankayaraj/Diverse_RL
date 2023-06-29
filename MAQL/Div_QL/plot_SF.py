@@ -3,10 +3,10 @@ from DivQL_main import DivQL
 from env.gridworld.environments import GridWalk
 from model import NN_Paramters
 from parameters import Algo_Param, Save_Paths, Load_Paths
+from SFQL_Gradual_1 import SFQL_Gradual
 
-
-q_param = NN_Paramters(state_dim=2, action_dim=4, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=torch.device("cpu"), l_r=0.05)
-nu_param = NN_Paramters(state_dim=2, action_dim=4, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=torch.device("cpu"), l_r=0.0001)
+q_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=torch.device("cpu"), l_r=0.05)
+nu_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[10, 10], non_linearity=torch.tanh, device=torch.device("cpu"), l_r=0.0001)
 algo_param = Algo_Param()
 algo_param.gamma = 0.9
 
@@ -16,21 +16,21 @@ import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 
 env = GridWalk(10, False)
-from env.gridworld.environments_obs_1 import GridWalk
-env = GridWalk(10, False)
 
 inital_log_buffer = torch.load("gradual_models/10x10/q/mem0")
 
 
-M  = DivQL(env, inital_log_buffer=inital_log_buffer, q_nn_param=q_param, nu_pram=nu_param,
-           algo_param=algo_param, num_z=15)
+M = SFQL_Gradual(env,  q_param, nu_param, algo_param, num_z=15)
 
 
-M.load_main( "gradual_models/10x10/DivQL/q1", "gradual_models/10x10/DivQL/target_q1" )
 
-z_no = 8
 
-for z in range(z_no):
+z_no = 9
+
+for z in range(1, z_no):
+
+    M.Q[z].load("gradual_models/SF/1/q" + str(z))
+
     data = [[0 for i in range(10)] for j in range(10)]
     for i in range(z):
         for x in range(10):
@@ -85,6 +85,4 @@ for z in range(z_no):
 
     #ax.set_title("DivQL, Ratio, Tabular", fontsize = 30)
     # Show the plot
-    plt.savefig("gradual_models/10x10/ratio_fig/obs/DivQL_ratio_" + str(z) )
-
-    #plt.savefig("gradual_models/10x10/ratio_fig_SF/SF_ratio_" + str(z))
+    plt.savefig("gradual_models/10x10/ratio_fig_SF/SF_ratio_" + str(z) )

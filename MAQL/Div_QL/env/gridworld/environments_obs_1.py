@@ -73,11 +73,19 @@ wwwww
                      [5,3], [5,4], [5,5]
                      ]
     
-    obstacle2 = [ [3,4],
+    obstacle2 = [
                   [4,4],
-                  [5,4],
+
                     ]
-    self.obstacle = obstacle1
+
+    obstacle3 = [[2, 3], [2, 4], [2, 5],
+                 [3, 3], [3, 4], [3, 5],
+                 [4, 3], [4, 4], [4, 5],
+                 [5, 3], [5, 4], [5, 5],
+                 [6, 3], [6, 4], [6, 5],
+                 [7, 3], [7, 4], [7, 5]
+                 ]
+    self.obstacle = obstacle3
 
 
     self.frozen = np.array([list(map(lambda c: 1 if c == 'f' else 0, line)) for line in layout.splitlines()])
@@ -161,8 +169,8 @@ wwwww
     #elif action == 4:
     #  pass
 
-    else:
-      raise ValueError('Invalid action %s.' % action)
+      else:
+        raise ValueError('Invalid action %s.' % action)
     taxi_distance = (np.abs(self._x - self._target_x) +
                      np.abs(self._y - self._target_y))
 

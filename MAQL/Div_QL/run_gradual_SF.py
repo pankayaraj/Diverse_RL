@@ -28,7 +28,7 @@ q_param = NN_Paramters(state_dim=2, action_dim=5, hidden_layer_dim=[10, 10], non
 algo_param = Algo_Param(hard_update_interval=1)
 algo_param.gamma = 0.9
 num_z = 10
-Z = [1, 2, 3, 4, 5, 6, 7, 8, 9 ]
+Z = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10 ]
 
 grid_size = 10
 env = GridWalk(grid_size, False)
@@ -54,7 +54,8 @@ M.Target_Q[0].load("gradual_models/SF/target_q0")
 M.SF[0].load("gradual_models/SF/sf0")
 M.Target_SF[0].load("gradual_models/SF/target_sf0")
 
-
+#M.Q[0].load("gradual_models/10x10/q/q0")
+#M.Target_Q[0].load("gradual_models/10x10/q/target_q0")
 
 for z in Z:
 

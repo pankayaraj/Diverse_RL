@@ -182,7 +182,7 @@ class Q_learning():
         self.epsilon = 0.99
         state = self.env.reset()
         self.inital_state = state
-        for i in range(self.batch_size):
+        for i in range(self.batch_size+1):
             state = self.step(state)
         return state
 
