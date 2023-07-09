@@ -11,12 +11,17 @@ from parameters import Algo_Param, NN_Paramters, Save_Paths, Load_Paths
 class SAC():
 
     def __init__(self, env, q_nn_param, policy_nn_param, algo_nn_param, max_episodes =100, memory_capacity =10000,
-                 batch_size=400, save_path = Save_Paths(), load_path= Load_Paths(), action_space = None, alpha_lr=0.0003,
-                 buffer_type= "FIFO", fifo_frac=0.34, change_at = [100000, 350000], env_type="robochool", mtr_buff_no = 3):
-
+                 batch_size=400, save_path = Save_Paths(), load_path= Load_Paths(), action_space = None, alpha_lr=0.00,
+                 num_z=2,):
+        
+        
         self.env = env
         self.env_type = env_type
         self.device = q_nn_param.device
+
+
+        self.num_z = num_z
+
 
         self.alpha_lr = alpha_lr
         self.q_nn_param = q_nn_param
@@ -37,58 +42,46 @@ class SAC():
         self.target_update_interval = self.algo_nn_param.target_update_interval
         self.automatic_alpha_tuning = self.algo_nn_param.automatic_alpha_tuning
 
-        if self.env_type != "sumo":
-            self.critic_1 = Q_Function_NN(nn_params=q_nn_param, save_path=save_path.q_path, load_path=load_path.q_path)
-            self.critic_2 = Q_Function_NN(nn_params=q_nn_param, save_path=save_path.q_path, load_path=load_path.q_path)
+        self.critic_1 = {}
+        self.critic_2 = {}
+        self.policy = {}
+        self.critic_target_1 = {}
+        self.critic_target_2 = {}
+        self.critic_1_optim = {}
+        self.critic_2_optim = {}
+        self.policy_optim = {}
 
-            self.critic_target_1 = Q_Function_NN(nn_params=q_nn_param, save_path=save_path.q_path, load_path=load_path.q_path)
-            self.critic_target_2 = Q_Function_NN(nn_params=q_nn_param, save_path=save_path.q_path, load_path=load_path.q_path)
-
-            self.policy = Continuous_Gaussian_Policy(policy_nn_param, save_path=save_path.policy_path,
-                                                     load_path=load_path.policy_path, action_space=action_space)
-
-
-        else:
-            self.critic_1 = Q_Function_sumo_NN(nn_params=q_nn_param, save_path=save_path.q_path, load_path=load_path.q_path)
-            self.critic_2 = Q_Function_sumo_NN(nn_params=q_nn_param, save_path=save_path.q_path, load_path=load_path.q_path)
-
-            self.critic_target_1 = Q_Function_sumo_NN(nn_params=q_nn_param, save_path=save_path.q_path,
-                                                 load_path=load_path.q_path)
-            self.critic_target_2 = Q_Function_sumo_NN(nn_params=q_nn_param, save_path=save_path.q_path,
-                                                 load_path=load_path.q_path)
-
-            self.policy = Continuous_Gaussian_Policy_Sumo(policy_nn_param, save_path=save_path.policy_path,
-                                                     load_path=load_path.policy_path, action_space=action_space)
+        self.target_entropy = {}
+        self.log_alpha = {}
+        self.alpha_optim = {}
 
 
+        for i in range(self.num_z):
 
-        self.critic_target_1.load_state_dict(self.critic_1.state_dict())
-        self.critic_target_2.load_state_dict(self.critic_2.state_dict())
+            self.critic_1[i] = Q_Function_NN(nn_params=q_nn_param, save_path=save_path.q_path, load_path=load_path.q_path)
+            self.critic_2[i] = Q_Function_NN(nn_params=q_nn_param, save_path=save_path.q_path, load_path=load_path.q_path)
 
+            self.critic_target_1[i] = Q_Function_NN(nn_params=q_nn_param, save_path=save_path.q_path, load_path=load_path.q_path)
+            self.critic_target_2[i] = Q_Function_NN(nn_params=q_nn_param, save_path=save_path.q_path, load_path=load_path.q_path)
 
+            self.policy[i] = Continuous_Gaussian_Policy(policy_nn_param, save_path=save_path.policy_path,
+                                                        load_path=load_path.policy_path, action_space=action_space)
 
-        self.critic_1_optim = torch.optim.Adam(self.critic_1.parameters(), self.q_nn_param.l_r)
-        self.critic_2_optim = torch.optim.Adam(self.critic_2.parameters(), self.q_nn_param.l_r)
-        self.policy_optim = torch.optim.Adam(self.policy.parameters(), self.q_nn_param.l_r)
+            self.critic_target_1[i].load_state_dict(self.critic_1.state_dict())
+            self.critic_target_2[i].load_state_dict(self.critic_2.state_dict())
 
-        if self.automatic_alpha_tuning is True:
-            self.target_entropy = -torch.prod(torch.Tensor(self.env.action_space.shape).to(self.device)).item()
-            self.log_alpha = torch.zeros(1, requires_grad=True, device=self.device)
-            self.alpha_optim = torch.optim.Adam([self.log_alpha], lr=alpha_lr)
+            self.critic_1_optim[i] = torch.optim.Adam(self.critic_1.parameters(), self.q_nn_param.l_r)
+            self.critic_2_optim[i] = torch.optim.Adam(self.critic_2.parameters(), self.q_nn_param.l_r)
+            self.policy_optim[i] = torch.optim.Adam(self.policy.parameters(), self.q_nn_param.l_r)
 
-        if buffer_type == "FIFO":
-            self.replay_buffer = Replay_Memory(capacity=memory_capacity)
-        #elif buffer_type == "Reservior":
-        #    self.replay_buffer = Reservoir_Replay_Memory(capacity=memory_capacity)
-        #elif buffer_type == "Half_Reservior_FIFO":
-        #    self.replay_buffer = Reservoir_with_FIFO_Replay_Buffer(capacity=memory_capacity, fifo_fac=fifo_frac)
-        elif buffer_type == "MTR":
-            self.replay_buffer = Multi_time_Scale_Buffer(capacity=memory_capacity, no_buffers=mtr_buff_no)
-        elif buffer_type == "Half_Reservior_FIFO_with_FT":
-            self.replay_buffer = Half_Reservoir_with_FIFO_Flow_Through_Replay_Buffer(capacity=memory_capacity, fifo_fac=fifo_frac)
-        elif buffer_type == "Custom":
-            self.replay_buffer = Custom_HRF(capacity=memory_capacity, fifo_fac=fifo_frac, change_at = change_at)
+            if self.automatic_alpha_tuning is True:
+                self.target_entropy[i] = -torch.prod(torch.Tensor(self.env.action_space.shape).to(self.device)).item()
+                self.log_alpha[i] = torch.zeros(1, requires_grad=True, device=self.device)
+                self.alpha_optim[i] = torch.optim.Adam([self.log_alpha], lr=alpha_lr)
 
+        
+        self.replay_buffer = Replay_Memory(capacity=memory_capacity)
+        
     def get_action(self, state, evaluate=False):
 
         action, log_prob, action_mean = self.policy.sample(state, format="torch")
