@@ -12,10 +12,9 @@ class SAC():
 
     def __init__(self, env, q_nn_param, policy_nn_param, algo_nn_param, max_episodes =100, memory_capacity =10000,
                  batch_size=400, save_path = Save_Paths(), load_path= Load_Paths(), action_space = None, alpha_lr=0.0003,
-                 buffer_type= "FIFO", fifo_frac=0.34, change_at = [100000, 350000], env_type="robochool", mtr_buff_no = 3):
+                 ):
 
         self.env = env
-        self.env_type = env_type
         self.device = q_nn_param.device
 
         self.alpha_lr = alpha_lr
@@ -48,17 +47,7 @@ class SAC():
                                                      load_path=load_path.policy_path, action_space=action_space)
 
 
-        else:
-            self.critic_1 = Q_Function_sumo_NN(nn_params=q_nn_param, save_path=save_path.q_path, load_path=load_path.q_path)
-            self.critic_2 = Q_Function_sumo_NN(nn_params=q_nn_param, save_path=save_path.q_path, load_path=load_path.q_path)
-
-            self.critic_target_1 = Q_Function_sumo_NN(nn_params=q_nn_param, save_path=save_path.q_path,
-                                                 load_path=load_path.q_path)
-            self.critic_target_2 = Q_Function_sumo_NN(nn_params=q_nn_param, save_path=save_path.q_path,
-                                                 load_path=load_path.q_path)
-
-            self.policy = Continuous_Gaussian_Policy_Sumo(policy_nn_param, save_path=save_path.policy_path,
-                                                     load_path=load_path.policy_path, action_space=action_space)
+        
 
 
 
