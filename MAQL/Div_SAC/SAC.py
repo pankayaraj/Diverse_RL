@@ -16,7 +16,7 @@ class SAC():
         
         
         self.env = env
-        self.env_type = env_type
+        #self.env_type = env_type
         self.device = q_nn_param.device
         self.inital_state = None
 

@@ -48,6 +48,7 @@ class DivQL():
 
         self.log_ratio = {}
         self.ratio = {}
+        
         for i in range(self.num_z):
             self.log_ratio[i] = Log_Ratio(self.nu_param, self.algo_param,  num_z=self.num_z,
                                  save_path=save_path.nu_path, load_path=load_path.nu_path, state_action=True)
